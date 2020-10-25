@@ -473,8 +473,8 @@ class App extends Component {
     }
     if (onIncorrectCard) {
       return (romajiNotInDict 
-        ? `${curWrongChar} does not exist in the Japanese alphabet. Try again.`
-        : `${curWrongChar} corresponds to ${this.getKeyByValue(katakanaToRomaji, curWrongChar)}, not ${currentJapChar}. Try again.`
+        ? `${curWrongChar} does not exist in the Japanese alphabet. Delete your input and try again.`
+        : `${curWrongChar} corresponds to ${this.getKeyByValue(katakanaToRomaji, curWrongChar)}, not ${currentJapChar}. Delete your input and try again.`
       );
     } else if (onHintedCard) {
       return "Type the character."
@@ -493,7 +493,7 @@ class App extends Component {
       }
     } else {
       // return `I will be giving you feedback as you use the app.`;
-      return `press SPACEBAR if you're stuck.`;
+      return `Press spacebar if you're stuck.`;
     }
   };
   setButtonText = () => {
@@ -890,7 +890,7 @@ class App extends Component {
                       />
                     </Grid>
                     <div className="module-level">
-                      {`Level ${this.state.moduleInfo ? this.state.moduleInfo.moduleIndex : 0}`}
+                      {`Level ${this.state.moduleInfo ? this.state.moduleInfo.moduleIndex - 1 : 0}`}
                     </div>
                     <Grid item>
                       <Box
