@@ -16,6 +16,17 @@
   border: $card-border-thickness solid white; // prevent slight jerkiness when complete word
 }
 
+.card2 {
+  border-radius: calc(5px + 1vh);
+  margin-top: 3vh;
+  margin-bottom: 3vh;
+  padding: 1px;
+  padding-top: 0;
+  padding-bottom: 0;
+  box-sizing: border-box;
+  border: $card-border-thickness solid white; // prevent slight jerkiness when complete word
+}
+
 .card-button {
   border: $card-border-thickness solid $card-border-neutral-color;
   box-shadow: 0 $card-shadow-depth $card-border-neutral-color;

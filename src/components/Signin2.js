@@ -2,16 +2,18 @@ import React from "react";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import Link from "@material-ui/core/Link";
+import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
-import Link from "@material-ui/core/Link";
-import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core/styles";
-import { REGISTER_URL } from "../constants";
+import { SIGNIN_URL } from "../constants";
 import "../scss/components/Signin.scss";
 import TextBlock from "./TextBlock";
-import LoadingPopup from "./LoadingPopup";
+import LoadingPopup from "./LoadingPopup"
 
 import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
 import FontDownloadIcon from "@material-ui/icons/FontDownload";
@@ -25,7 +27,7 @@ const useStyles = (theme) => ({
     backfround: "white",
   },
   paper: {
-    marginTop: theme.spacing(5),
+    marginTop: theme.spacing(6),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -50,51 +52,36 @@ const useStyles = (theme) => ({
   },
 });
 
-class Register extends React.Component {
+class Signin2 extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: "",
-      email: "",
-      password: "",
-      nameError: false,
-      emailError: false,
-      passwordError: false,
-      nameErrorMsg: "",
+      signInEmail: "",
+      signInPassword: "",
       emailErrorMsg: "",
       passwordErrorMsg: "",
       openLoadingPopup: false,
     };
   }
 
-  validateEmail(email) {
-    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
-  }
-
-  onNameInput = (event) => {
-    this.setState({ name: event.target.value, nameErrorMsg: "" });
-  };
-
   onEmailInput = (event) => {
-    this.setState({ email: event.target.value, emailErrorMsg: "" });
+    this.setState({ signInEmail: event.target.value, emailErrorMsg: "" });
   };
 
   onPasswordInput = (event) => {
-    this.setState({ password: event.target.value, passwordErrorMsg: "" });
+    this.setState({ signInPassword: event.target.value, passwordErrorMsg: "" });
   };
 
-  sendFormDataToBackEnd = () => {
-    const { name, email, password } = this.state;
+  sendSigninInfoToBackend = () => {
+    const { signInEmail, signInPassword } = this.state;
     this.setState({ openLoadingPopup: true })
 
-    fetch(REGISTER_URL, {
+    fetch(SIGNIN_URL, {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        name: name,
-        email: email,
-        password: password,
+        email: signInEmail,
+        password: signInPassword,
       }),
     })
       .then((response) => response.json())
@@ -102,12 +89,23 @@ class Register extends React.Component {
         this.setState({ openLoadingPopup: false })
 
         if (Object.keys(data).length === 4) {
-          this.setState({ emailErrorMsg: "" });
           this.props.loadUser(data);
           this.props.onRouteChange("home");
+          this.setState({
+            emailErrorMsg: "",
+            passwordErrorMsg: "",
+          });
         } else {
-          // if user already exist
-          this.setState({ emailErrorMsg: data });
+          // there is an error loggin in
+          console.log("Login Failed", data);
+          if (data === "email is not yet registered") {
+            this.setState({ emailErrorMsg: data });
+          } else if (data === "incorrect password") {
+            this.setState({
+              passwordErrorMsg: data,
+              emailErrorMsg: "",
+            });
+          }
         }
       })
       .catch((error) => {
@@ -115,44 +113,31 @@ class Register extends React.Component {
       });
   };
 
-  onFormSubmit = (event) => {
+  onSignIn = (event) => {
     event.preventDefault();
-    const { name, email, password } = this.state;
+    const { signInEmail, signInPassword } = this.state;
 
-    if (!name) {
-      this.setState({ nameErrorMsg: "please fill out your name" });
-    } else {
-      this.setState({ nameErrorMsg: "" });
-    }
-    if (!email) {
+    // check that fields are not empty
+    if (!signInEmail) {
       this.setState({ emailErrorMsg: "please fill out your email" });
     } else {
       this.setState({ emailErrorMsg: "" });
     }
-    if (!password) {
+    if (!signInPassword) {
       this.setState({ passwordErrorMsg: "please fill out your password" });
     } else {
       this.setState({ passwordErrorMsg: "" });
     }
 
-    if (!this.validateEmail(email)) {
-      this.setState({ emailErrorMsg: "please enter a valid email address" });
-      return;
-    } else {
-      this.setState({ emailErrorMsg: "" });
-    }
-
-    if (name && password && email) {
-      this.sendFormDataToBackEnd();
+    if (signInEmail && signInPassword) {
+      this.sendSigninInfoToBackend();
     } else {
       return;
     }
   };
 
   render() {
-    console.log("IS THIS RENDERING?")
     const { classes } = this.props;
-    const { nameErrorMsg, emailErrorMsg, passwordErrorMsg } = this.state;
     return (
       <div className="flex-container">
         <LoadingPopup isOpen={this.state.openLoadingPopup} />
@@ -160,11 +145,11 @@ class Register extends React.Component {
           <div className="header">
             <h1 className="title">JapanEZ</h1>
             <p className="subtitle">
-              Learn Japanese Katakana as you explore English-like Japanese words
+              Learn Japanese Katakana characters with a tailor tutor model
             </p>
           </div>
           <div className="signin">
-            <Paper className={classes.paper2}>
+            <Paper className={classes.paper2} elevation={3}>
               <Container
                 component="main"
                 maxWidth="xs"
@@ -173,22 +158,12 @@ class Register extends React.Component {
                 <CssBaseline />
                 <div className={classes.paper}>
                   <Typography component="h1" variant="h5">
-                    Register
+                    Sign in
                   </Typography>
                   <form className={classes.form} noValidate>
                     <TextField
-                      error={nameErrorMsg}
-                      helperText={nameErrorMsg}
-                      variant="outlined"
-                      id="name"
-                      label="Your Name"
-                      // autoFocus
-                      fullWidth
-                      onChange={this.onNameInput}
-                    />
-                    <TextField
-                      error={emailErrorMsg}
-                      helperText={emailErrorMsg}
+                      error={this.state.emailErrorMsg}
+                      helperText={this.state.emailErrorMsg}
                       variant="outlined"
                       margin="normal"
                       fullWidth
@@ -196,11 +171,12 @@ class Register extends React.Component {
                       label="Email Address"
                       name="email"
                       autoComplete="email"
+                      // autoFocus
                       onChange={this.onEmailInput}
                     />
                     <TextField
-                      error={passwordErrorMsg}
-                      helperText={passwordErrorMsg}
+                      error={this.state.passwordErrorMsg}
+                      helperText={this.state.passwordErrorMsg}
                       variant="outlined"
                       margin="normal"
                       fullWidth
@@ -211,16 +187,20 @@ class Register extends React.Component {
                       autoComplete="current-password"
                       onChange={this.onPasswordInput}
                     />
+                    <FormControlLabel
+                      control={<Checkbox value="remember" color="primary" />}
+                      label="Remember me"
+                    />
                     <Button
                       type="submit"
                       fullWidth
                       variant="contained"
                       color="primary"
                       className={classes.submit}
-                      onClick={this.onFormSubmit}
-                      style={{ color: "#ffffff" }}
+                      onClick={this.onSignIn}
+                      style={{ color: "white" }}
                     >
-                      Get started
+                      Sign In
                     </Button>
                     <Grid
                       container
@@ -229,13 +209,13 @@ class Register extends React.Component {
                       justify="center"
                     >
                       <Grid item>
-                        {"Already registered? "}
+                        {"Don't have an account? "}
                         <Link
                           component="button"
                           variant="body2"
-                          onClick={() => this.props.onRouteChange("signin")}
+                          onClick={() => this.props.onRouteChange("register")}
                         >
-                          {"Sign In"}
+                          {"Register Here"}
                         </Link>
                       </Grid>
                     </Grid>
@@ -259,11 +239,6 @@ class Register extends React.Component {
               description="Receive contextual feedback as you progress through the app."
             />
             <TextBlock
-              icon={<FontDownloadIcon fontSize="large" />}
-              title="Learn words that sound like English"
-              description="You'd be surprised how many common Japanese words you've already known. For example, the Japnese word for tomato is トマト, which is pronounced 'to-mah-to'."
-            />
-            <TextBlock
               icon={<InsertChartIcon fontSize="large" />}
               title="Easily keep track of your progress"
               description="You can view your learning progress through interactive and animated visuals and charts."
@@ -275,4 +250,4 @@ class Register extends React.Component {
   }
 }
 
-export default withStyles(useStyles)(Register);
+export default withStyles(useStyles)(Signin2);

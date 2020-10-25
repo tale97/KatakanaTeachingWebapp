@@ -19,6 +19,7 @@ import FeedbackIcon from "@material-ui/icons/Feedback";
 import SubtitlesIcon from "@material-ui/icons/Subtitles";
 import InsertChartIcon from '@material-ui/icons/InsertChart';
 
+
 const useStyles = (theme) => ({
   container: {
     fontFamily: "Roboto",
@@ -50,7 +51,7 @@ const useStyles = (theme) => ({
   },
 });
 
-class Register extends React.Component {
+class Register2 extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -150,7 +151,6 @@ class Register extends React.Component {
   };
 
   render() {
-    console.log("IS THIS RENDERING?")
     const { classes } = this.props;
     const { nameErrorMsg, emailErrorMsg, passwordErrorMsg } = this.state;
     return (
@@ -160,7 +160,7 @@ class Register extends React.Component {
           <div className="header">
             <h1 className="title">JapanEZ</h1>
             <p className="subtitle">
-              Learn Japanese Katakana as you explore English-like Japanese words
+              Learn Japanese Katakana characters in an interactive way
             </p>
           </div>
           <div className="signin">
@@ -259,11 +259,6 @@ class Register extends React.Component {
               description="Receive contextual feedback as you progress through the app."
             />
             <TextBlock
-              icon={<FontDownloadIcon fontSize="large" />}
-              title="Learn words that sound like English"
-              description="You'd be surprised how many common Japanese words you've already known. For example, the Japnese word for tomato is トマト, which is pronounced 'to-mah-to'."
-            />
-            <TextBlock
               icon={<InsertChartIcon fontSize="large" />}
               title="Easily keep track of your progress"
               description="You can view your learning progress through interactive and animated visuals and charts."
@@ -275,4 +270,4 @@ class Register extends React.Component {
   }
 }
 
-export default withStyles(useStyles)(Register);
+export default withStyles(useStyles)(Register2);

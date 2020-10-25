@@ -6,7 +6,8 @@ import { createLogger } from "redux-logger";
 import "./scss/index.scss";
 import * as serviceWorker from "./serviceWorker";
 // import "tachyons"; // mess with material-ui Textfield
-import App from "./containers/App.js";
+import App2 from "./containers/App2.js"; // char-based version
+import App from "./containers/App.js"; // word-based version
 import {
   changeGeneralState,
   changeInputBox,
@@ -53,12 +54,11 @@ const store = createStore(
   rootReducer,
   applyMiddleware(logger, LogRocket.reduxMiddleware())
 );
-// const store = createStore(rootReducer);
 
 ReactDOM.render(
   <Provider store={store}>
     <ThemeProvider theme={theme}>
-      <App />
+      <App2 />
     </ThemeProvider>
   </Provider>,
   document.getElementById("root")
