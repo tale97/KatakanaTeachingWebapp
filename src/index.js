@@ -58,7 +58,7 @@ const store = createStore(
 ReactDOM.render(
   <Provider store={store}>
     <ThemeProvider theme={theme}>
-      <App2 />
+      <App />
     </ThemeProvider>
   </Provider>,
   document.getElementById("root")
