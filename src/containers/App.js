@@ -890,7 +890,7 @@ class App extends Component {
                       />
                     </Grid>
                     <div className="module-level">
-                      {`Level ${this.state.moduleInfo ? this.state.moduleInfo.moduleIndex - 1 : 0}`}
+                      {`Level ${this.state.moduleInfo ? this.state.moduleInfo.moduleIndex : 0}`}
                     </div>
                     <Grid item>
                       <Box
