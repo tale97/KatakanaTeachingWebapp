@@ -19,6 +19,8 @@ import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
 import FontDownloadIcon from "@material-ui/icons/FontDownload";
 import FeedbackIcon from "@material-ui/icons/Feedback";
 import SubtitlesIcon from "@material-ui/icons/Subtitles";
+import InsertChartIcon from '@material-ui/icons/InsertChart';
+
 
 const useStyles = (theme) => ({
   container: {
@@ -239,14 +241,13 @@ class Signin extends React.Component {
             />
             <TextBlock
               icon={<FontDownloadIcon fontSize="large" />}
-              title="Words that sound like English"
-              description="Such as kisu (kiss), in'teru (intelligent). You'd be surprised how much Japanese you've already known."
+              title="Learn words that sound like English"
+              description="You'd be surprised how many common Japanese words you've already known. For example, the Japnese word for tomato is トマト, which is pronounced 'to-mah-to'."
             />
             <TextBlock
-              icon={<SubtitlesIcon fontSize="large" />}
-              title="Learn real common Japanese words"
-              description="You can listen to audio from native speakers. This helps you compare and contrast the pronunciation of
-                Japanese and English."
+              icon={<InsertChartIcon fontSize="large" />}
+              title="Easily keep track of your progress"
+              description="You can view your learning progress through interactive and animated visuals and charts."
             />
           </div>
         </div>

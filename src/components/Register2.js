@@ -14,9 +14,7 @@ import TextBlock from "./TextBlock";
 import LoadingPopup from "./LoadingPopup";
 
 import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
-import FontDownloadIcon from "@material-ui/icons/FontDownload";
 import FeedbackIcon from "@material-ui/icons/Feedback";
-import SubtitlesIcon from "@material-ui/icons/Subtitles";
 import InsertChartIcon from '@material-ui/icons/InsertChart';
 
 
