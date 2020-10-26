@@ -876,7 +876,6 @@ class App2 extends Component {
                       spacing={2}
                     >                      
                       {this.showHint()}
-                      {/* {this.displayWordInfo()} */}
                     </Grid>                  
                   </Grid>
                 </div>

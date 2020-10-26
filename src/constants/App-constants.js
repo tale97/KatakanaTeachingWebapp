@@ -1,3 +1,5 @@
+import { VERSION } from "../constants";
+
 const listOfPraises = [
   "Great job!",
   "You're a pro!",
@@ -25,19 +27,29 @@ const listOfEncouragements = [
   "You can do this!",
   "Try again.",
 ]
+
+const welcomeText = (version) => {
+  return (version === 1 ? (
+    `Welcome! Your challenging is to type out the pronunciation of Japanese words.`
+  ) : (
+    `Welcome! Your challenging is to type out the pronunciation of Japanese characters.`
+  ));
+}
+
 const Introduction = [
   {
-    intro: "Welcome! Your challenging is to type out the pronunciation of Japanese words.",
+    intro: welcomeText(VERSION),
   },
   {
-    intro: "If you don't know a Japanese character, just press SPACEBAR to learn them.",
+    intro: "If you don't know a Japanese character, simply press SPACEBAR to learn them.",
   },
   // {
   //   element: ".nav-button-walkthrough",
   //   intro: "You can click this tab anytime for a walkthrough.",
   //   position: "bottom"
   // }
-]
+];
+
 const WALKTHROUGH_PART_1 = [
   {
     intro: "Welcome to the walkthrough! Click next to continue.",
@@ -67,6 +79,7 @@ const WALKTHROUGH_PART_2 = [
     position: "left",
   },
 ];
+
 const WALKTHROUGH_PART_3 =  [
   {
     element: ".inputbox-div",
@@ -83,7 +96,7 @@ const WALKTHROUGH_PART_3 =  [
     intro: "Can you try to finish the rest? Keep clicking the button if you don't know the character.",
     position: "left",
   },
-]
+];
 
 const WALKTHROUGH_PART_4 = [
   {

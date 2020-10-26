@@ -156,7 +156,7 @@ class CharInput extends React.Component {
 
     if (char === romajiList[indexCurrentCard] && !onHintedCard) {
       updateCharScore(user_uid, userInputChar, "+1");
-      this.props.requestModuleInfo();
+      this.props.requestModuleInfo(this.props.thisApp);
       onCorrectChar();
       onCompleteChar(Date.now(), "correct");
 
@@ -184,7 +184,7 @@ class CharInput extends React.Component {
       );
       updateCharScore(user_uid, userInputChar, "0");
       updateCharScore(user_uid, currentChar, "0");
-      this.props.requestModuleInfo();
+      this.props.requestModuleInfo(this.props.thisApp);
     }
   };
 
@@ -285,11 +285,12 @@ class CharInput extends React.Component {
       moveToNextWord,
       requestedWord,
       firstTimeCompleteWordSinceWalkThrough,
+      thisApp,
     } = this.props;
 
     if (wordCompleted) {
       firstTimeCompleteWordSinceWalkThrough()
-      moveToNextWord(requestedWord);
+      moveToNextWord(requestedWord, thisApp);
       onSpacePress("CONTINUE_AFTER_COMPLETE");
       eventTarget.value = "";
       onInputBoxChange(eventTarget.value);
@@ -320,7 +321,7 @@ class CharInput extends React.Component {
     } else if (!onIncorrectCard && !onHintedCard && !wordCompleted) {
       // ask for hint
       console.log("Requesting hint...")
-      this.props.requestModuleInfo();
+      this.props.requestModuleInfo(this.props.thisApp);
       onSpacePress("REQUEST_HINT");
       onCompleteChar(Date.now(), "hinted");
 
@@ -329,7 +330,7 @@ class CharInput extends React.Component {
         romajiList[indexCurrentCard]
       );
       updateCharScore(user_uid, currentChar, "+0");
-      this.props.requestModuleInfo();
+      this.props.requestModuleInfo(this.props.thisApp);
       // clear current input
       this.clearCurrentInput(eventTarget);
     } else if (wordCompleted) {

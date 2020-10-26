@@ -4,31 +4,30 @@ import CharList from "./CharList";
 import CharInput from "./CharInput";
 import NavBar from "../components/NavBar";
 import Hint from "../components/Hint";
-import { Grid, Paper } from "@material-ui/core";
-import { katakanaToRomaji } from "../jap-char";
+import { 
+  Grid, 
+  Paper,
+  Button,
+  Switch,
+  Box,
+  FormControlLabel,
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@material-ui/core";
 import Signin from "../components/Signin";
 import Register from "../components/Register";
-import WordCard from "../components/WordCard";
 import WordCard2 from "../components/WordCard2";
 import OutsideAlerter from "../components/OutsideAlerter";
 import Footer from "../components/Footer";
 import MessageBar from "../components/MessageBar";
 import SmallCharList from "../components/SmallCharList";
 import KatakanaChart from "../components/KatakanaChart";
-import { Button } from "@material-ui/core";
 import LoadingPopup from "../components/LoadingPopup"
-import Switch from "@material-ui/core/Switch";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
 import LinearDeterminate from "../components/LinearDeterminate";
-import Box from '@material-ui/core/Box';
-
-// dialog
-import Dialog from "@material-ui/core/Dialog";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
-
 import "../scss/containers/App.scss";
+import { katakanaToRomaji } from "../jap-char";
 import {
   updateChar,
   updateWord,
@@ -42,6 +41,7 @@ import {
   MEDIA_BASE_URL_WORD,
   USER_TIME_LIMIT_IN_MINUTES,
   GETMODULEINFO_URL,
+  GETCHAR_URL,
 } from "../constants";
 import {
   listOfPraises,
@@ -51,11 +51,17 @@ import {
   WALKTHROUGH_PART_3,
   WALKTHROUGH_PART_4,
   Introduction,
-} from "../constants/App-constants"
-
+} from "../constants/App-constants";
+import {
+  parseJapaneseWord,
+  updateCharScore,
+  parseAudio,
+  requestModuleInfo,
+  requestNewWordPromise,
+  requestNewCharPromise,
+  moveToNextWord,
+} from "../constants/App-methods";
 import LogRocket from "logrocket";
-
-// test introjs
 import 'intro.js/introjs.css';
 import { Steps } from 'intro.js-react';
 
@@ -99,19 +105,19 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      route: "register", // should be register
-      // userInfo: {
-      //   id: "ac73af88-9b41-418f-909e-902ed5f6d446",
-      //   name: "Dev",
-      //   email: "dev@g.com",
-      //   joined: "2020-10-25T14:57:22.578Z",
-      // },
+      route: "home", // should be register
       userInfo: {
-        id: "",
-        name: "",
-        email: "",
-        joined: "",
+        email: "developer@g.com",
+        joined: "2020-10-26T14:19:40.915Z",
+        name: "Developer",
+        id: "5ab535f5-b0eb-4a9b-98b5-b6b86cd8d328",
       },
+      // userInfo: {
+      //   id: "",
+      //   name: "",
+      //   email: "",
+      //   joined: "",
+      // },
       requestedWord: `place_holder`,
 
       currentWordInfo: null,
@@ -151,7 +157,7 @@ class App extends Component {
     console.log("Running word-based version...")
     this.props.resetStore();
     this.requestAndUpdateWord();
-    this.requestModuleInfo();
+    this.requestModuleInfo(this);
   }
 
   componentDidUpdate = (prevProps, prevState) => {
@@ -164,12 +170,12 @@ class App extends Component {
       this.setState({ steps3Enabled: false });
       this.setState({ steps4Enabled: false });
       this.setState({ firstIntroductionEnabled: true });
-      this.requestModuleInfo();
+      this.requestModuleInfo(this);
     } 
     if (this.state.userInfo.id !== prevState.userInfo.id) {
       this.props.resetStore();
       this.requestAndUpdateWord();
-      this.requestModuleInfo();
+      this.requestModuleInfo(this);
     }
     if (this.props.wordCompleted 
         && this.props.wordCompleted !== prevProps.wordCompleted) {
@@ -178,7 +184,7 @@ class App extends Component {
     if (this.state.route === "home") {
       setTimeout(() => {
         this.setState({ openEndDialogue: true });
-      }, USER_TIME_LIMIT_IN_MINUTES * 60000);
+      }, USER_TIME_LIMIT_IN_MINUTES * 60000); //USER_TIME_LIMIT_IN_MINUTES
     }
     if (this.state.steps1Enabled === prevState.steps1Enabled
         && !this.state.transitionedFromSteps1ToSteps2) {
@@ -237,152 +243,27 @@ class App extends Component {
     this.setState({ route: route });
   };
 
-  parseJapaneseWord = (katakana_word) => {
-    var charsToRead = [];
-    for (const katakana_char of katakana_word) {
-      var katakana_romaji = katakanaToRomaji[katakana_char] || "??";
-      charsToRead.push({ 
-        char: katakana_char, 
-        romaji: katakana_romaji 
-      });
-    }
-    return charsToRead;
-  };
-
-  updateCharScore = (user_uid, katakana_char, score) => {
-    fetch(UPDATECHARSCORE_URL, {
-      method: "post",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        user_uid: user_uid,
-        char: katakana_char,
-        score: score,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-      })
-      .catch((error) => {
-        console.log("Failed to update char score", error);
-      });
-  };
-
-  // not used
-  updateWordScore = (user_uid, word) => {
-    fetch(WORDSCORE_URL, {
-      method: "post",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        user_uid: user_uid,
-        word: word,
-        unix_time: this.state.currentWord_unix_time,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("Update Word Score:", data);
-        // once score is updated, request new word
-        this.requestNewWord();
-      })
-      .catch((error) => {
-        console.log("Failed to update word score", error);
-      });
-  };
-
-  parseAudio = (audio_string) => {
-    return audio_string.slice(7, audio_string.length - 1);
-  };
-
-  requestModuleInfo = () => {
-    console.log(`REQUESTING MODULE INFO for user ${this.state.userInfo.id}`)
-    fetch(GETMODULEINFO_URL, {
-      method: "post",
-      headers: { "Content-Type": "application/json"},
-      body: JSON.stringify({
-        userId: this.state.userInfo.id,
-        version: "",
-      }),
-    })
-    .then((res) => res.json())
-    .then((moduleInfoObject) => {
-      this.setState({ moduleInfo: moduleInfoObject });
-    })
-    .catch((error) => {
-      console.log(`Error in requestModuleInfo: ${error}`);
-    });
-  }
-
-  requestNewWord = async() => {
-    console.log(`Requesting word for user with id ${this.state.userInfo.id}`)
-    return new Promise(resolve => {
-      console.log('requesting new word...')
-      this.setState({ clickedJapChar: "" });
-      this.setState({ isFetchingWord: true })
-      const wordRequestTime = Date.now();
-      console.log("Word requested at time:", wordRequestTime)
-      this.setState({ wordRequestTimeStamp: wordRequestTime})
-  
-      fetch(GETWORD_URL, {
-        method: "post",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          user_uid: this.state.userInfo.id,
-        }),
-      })
-      .then((res) => res.json())
-      .then((word) => {
-        console.log('sucessfully requested new word...')
-
-        if (word === "END GAME") {
-          this.setState({ openEndDialogue: true });
-        }
-        this.setState({ isFetchingWord: false });
-        this.setState({ requestedWord: word }); // not sure if should use await here
-        resolve();
-      })
-      .catch((err) => {
-        console.log("Error in getting next word", err);
-      });
-    });
-  };
-
-  moveToNextWord = async(word) => {
-    this.requestModuleInfo();
-    const { setCurrentChar, updateWord } = this.props;
-    var romajiList = [];
-    
-    if (Object.keys(word).includes("word")) {
-      romajiList = this.parseJapaneseWord(word.word).map(
-      (kana_char) => kana_char.romaji
-      );
-      updateWord(word.word, romajiList);
-      setCurrentChar(word.word.charAt(0), romajiList[0]);
+  parseJapaneseWord = parseJapaneseWord;
+  updateCharScore = updateCharScore;
+  parseAudio = parseAudio;
+  requestModuleInfo = requestModuleInfo;
+  requestNewWordPromise = requestNewWordPromise;
+  requestNewCharPromise = requestNewCharPromise;
+  requestNewWord = async () => {
+    if (this.props.version === 1) {
+      return this.requestNewWordPromise(this);
+    } else if (this.props.version === 2) {
+      return this.requestNewCharPromise(this);
     } else {
-      romajiList = this.parseJapaneseWord(word.vocab_kana).map(
-        (kana_char) => kana_char.romaji
-      );
-      updateWord(word.vocab_kana, romajiList);
-      setCurrentChar(word.vocab_kana.charAt(0), romajiList[0]);
-      const audio_url = `${MEDIA_BASE_URL_WORD}${this.parseAudio(word.vocab_sound_local)}`
-      const word_audio = new Audio(audio_url);
-  
-      word_audio.addEventListener("loadedmetadata", (event) => {
-        console.log("audio duration", event.target.duration)
-        this.setState({
-          word_audio_duration: event.target.duration,
-        });
-      });
+      console.log(`version should either be 1 or 2`);
     }
+  };
+  moveToNextWord = moveToNextWord;
 
-    this.setState({ currentWordInfo: word });
-    this.setState({ currentWord_unix_time: Date.now() });
-    
-  }
-
-  requestAndUpdateWord = async() => {
+  requestAndUpdateWord = async () => {
     await this.requestNewWord();
-    this.moveToNextWord(this.state.requestedWord);
-  }
+    this.moveToNextWord(this.state.requestedWord, this);
+  };
 
   focusInputBox = () => {
     this.charInputRef.current.formRef.current.focus();
@@ -427,7 +308,7 @@ class App extends Component {
   };
 
   displayWordInfo = () => {
-    if (this.props.wordCompleted) {
+    if (this.props.wordCompleted && this.props.version === 1) {
       return (
         <Grid item>
           <WordCard2
@@ -449,7 +330,7 @@ class App extends Component {
 
   randomItem = (aList) => {
     return aList[Math.floor(Math.random() * aList.length)];
-  }
+  };
 
   displayMessage = () => {
     const {
@@ -865,7 +746,6 @@ class App extends Component {
                       <OutsideAlerter focusInputBox={this.focusInputBox}>
                         <CharInput
                           updateCharScore={this.updateCharScore}
-                          updateWordScore={this.updateWordScore}
                           getKeyByValue={this.getKeyByValue}
                           user_uid={this.state.userInfo.id}
                           ref={this.charInputRef}
@@ -879,6 +759,7 @@ class App extends Component {
                           firstTimeCompleteWordSinceWalkThrough = 
                           {this.firstTimeCompleteWordSinceWalkThrough}
                           requestModuleInfo={this.requestModuleInfo}
+                          thisApp={this}
                         />
                       </OutsideAlerter>
                     </Grid>

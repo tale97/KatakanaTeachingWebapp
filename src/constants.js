@@ -2,8 +2,11 @@ export const USER_INPUT = "USER_INPUT";
 
 const method = "tuanHeroku";
 
-var PRIMARYCOLOR = "#1cb0f6"
-// var PRIMARYCOLOR = "#45ACE7"
+
+// global configs
+var VERSION = 1;
+
+var PRIMARYCOLOR = "#1cb0f6";
 
 var USER_TIME_LIMIT_IN_MINUTES = 30;
 var REGISTER_URL = "https://localhost:3000/register";
@@ -68,4 +71,5 @@ export {
   GETMODULEINFO_URL,
   MARSHALSITE_LINK,
   GETCHAR_URL,
+  VERSION,
 };
