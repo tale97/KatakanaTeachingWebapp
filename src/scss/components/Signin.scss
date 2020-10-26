@@ -38,8 +38,9 @@ hr {
 }
 
 .signin {
-  // border: 1px solid green;
+  // border: 1px solid green; ///
   width: 545px;
+  height: auto; ///
 }
 
 .title {
@@ -62,12 +63,22 @@ hr {
 }
 
 .info-panel-inner {
-  // border: 1px green solid;
   min-width: 1250px;
+  height: 250px;
   display: flex;
   flex-direction: row;
   align-items: stretch;
   justify-content: space-evenly;
   flex-wrap: wrap;
   align-self: center;
+}
+
+.router {
+  margin-top: 10px;
+  margin-bottom: 40px;
+}
+
+.form-title {
+  margin-bottom: 20px;
+  // margin-top: 20px;
 }

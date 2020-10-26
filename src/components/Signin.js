@@ -39,7 +39,7 @@ const useStyles = (theme) => ({
     padding: theme.spacing(1),
     [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
       width: 500,
-      height: 450,
+      height: "auto",
       marginLeft: "auto",
       marginRight: "auto",
     },
@@ -188,10 +188,10 @@ class Signin extends React.Component {
                       autoComplete="current-password"
                       onChange={this.onPasswordInput}
                     />
-                    <FormControlLabel
+                    {/* <FormControlLabel
                       control={<Checkbox value="remember" color="primary" />}
                       label="Remember me"
-                    />
+                    /> */}
                     <Button
                       type="submit"
                       fullWidth
@@ -203,23 +203,16 @@ class Signin extends React.Component {
                     >
                       Sign In
                     </Button>
-                    <Grid
-                      container
-                      alignItems="center"
-                      direction="column"
-                      justify="center"
-                    >
-                      <Grid item>
-                        {"Don't have an account? "}
-                        <Link
-                          component="button"
-                          variant="body2"
-                          onClick={() => this.props.onRouteChange("register")}
-                        >
-                          {"Register Here"}
-                        </Link>
-                      </Grid>
-                    </Grid>
+                    <div className="router">
+                      {"Don't have an account? "}
+                      <Link
+                        component="button"
+                        variant="body2"
+                        onClick={() => this.props.onRouteChange("register")}
+                      >
+                        {"Register Here"}
+                      </Link>
+                    </div>
                   </form>
                 </div>
               </Container>
@@ -237,7 +230,7 @@ class Signin extends React.Component {
             <TextBlock
               icon={<FeedbackIcon fontSize="large" />}
               title="Built-in mnemonics and smart feedback"
-              description="Receive contextual feedback as you progress through the app."
+              description="Receive contextual feedback as you progress through the app. Use humourous illustrations and mnemonics to help you memorize characters."
             />
             <TextBlock
               icon={<FontDownloadIcon fontSize="large" />}

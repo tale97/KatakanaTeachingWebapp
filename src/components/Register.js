@@ -22,7 +22,7 @@ import InsertChartIcon from '@material-ui/icons/InsertChart';
 const useStyles = (theme) => ({
   container: {
     fontFamily: "Roboto",
-    backfround: "white",
+    backfround: "white", // ???
   },
   paper: {
     marginTop: theme.spacing(5),
@@ -36,7 +36,7 @@ const useStyles = (theme) => ({
     padding: theme.spacing(1),
     [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
       width: 500,
-      height: 450,
+      height: "auto",
       marginLeft: "auto",
       marginRight: "auto",
     },
@@ -172,8 +172,11 @@ class Register extends React.Component {
               >
                 <CssBaseline />
                 <div className={classes.paper}>
-                  <Typography component="h1" variant="h5">
+                  <Typography component="h1" variant="h5" >
+                    <div className="form-title">
+
                     Register
+                    </div>
                   </Typography>
                   <form className={classes.form} noValidate>
                     <TextField
@@ -222,23 +225,16 @@ class Register extends React.Component {
                     >
                       Get started
                     </Button>
-                    <Grid
-                      container
-                      alignItems="center"
-                      direction="column"
-                      justify="center"
-                    >
-                      <Grid item>
-                        {"Already registered? "}
-                        <Link
-                          component="button"
-                          variant="body2"
-                          onClick={() => this.props.onRouteChange("signin")}
-                        >
-                          {"Sign In"}
-                        </Link>
-                      </Grid>
-                    </Grid>
+                    <div className="router">
+                      {"Already registered? "}
+                      <Link
+                        component="button"
+                        variant="body2"
+                        onClick={() => this.props.onRouteChange("signin")}
+                      >
+                        {"Sign In"}
+                      </Link>
+                    </div>
                   </form>
                 </div>
               </Container>
@@ -256,7 +252,7 @@ class Register extends React.Component {
             <TextBlock
               icon={<FeedbackIcon fontSize="large" />}
               title="Built-in mnemonics and smart feedback"
-              description="Receive contextual feedback as you progress through the app."
+              description="Receive contextual feedback as you progress through the app. Use humourous illustrations and mnemonics to help you memorize characters."
             />
             <TextBlock
               icon={<FontDownloadIcon fontSize="large" />}
