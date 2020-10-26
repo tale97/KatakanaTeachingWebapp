@@ -3,7 +3,7 @@ export const USER_INPUT = "USER_INPUT";
 const method = "tuanHeroku";
 
 // global configs
-var VERSION = 1; // 1 for word-base ver, 2 for char-base ver
+var VERSION = 2; // 1 for word-base ver, 2 for char-base ver
 
 var PRIMARYCOLOR = "#1cb0f6";
 
