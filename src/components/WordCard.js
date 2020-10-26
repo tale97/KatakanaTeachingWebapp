@@ -3,8 +3,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
-import Music from "./Music";
-import { MEDIA_BASE_URL_SENTENCE, MEDIA_BASE_URL_WORD } from "../constants";
 import Divider from "@material-ui/core/Divider";
 import "../scss/components/WordCard.scss";
 
@@ -20,7 +18,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function WordCard({ wordInfo, word_audio_duration, autoplayAudio }) {
+export default function WordCard({ wordInfo }) {
   const classes = useStyles();
   var el = document.createElement("html");
   el.innerHTML = "<b>bolded text</b>";

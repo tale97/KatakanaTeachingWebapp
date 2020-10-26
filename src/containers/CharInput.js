@@ -108,7 +108,7 @@ class CharInput extends React.Component {
     }
   };
 
-  fillHintedCharacter = (eventTarget) => {
+  fillHintedCharacter = (event) => {
     const {
       onHintedCard,
       indexCurrentCard,
@@ -126,8 +126,8 @@ class CharInput extends React.Component {
         onWordCompletion();
       }
       // autofill correct answer
-      eventTarget.value = eventTarget.value.concat(currentRomaji);
-      onInputBoxChange(eventTarget.value);
+      event.target.value = event.target.value.concat(currentRomaji);
+      onInputBoxChange(event.target.value);
       onEnterPress(Date.now());
 
       const curRomaji = romajiList[indexCurrentCard + 1];
@@ -199,25 +199,21 @@ class CharInput extends React.Component {
       disableAllAction,
       walkThroughEnabled,
       endWalkThrough,
+      onInputBoxChange,
     } = this.props;
+    const { which } = event;
+    const lastCardState = cardStateList[cardStateList.length - 1];
     
     if (walkThroughEnabled) {
-      if (event.which === 27) {
+      if (which === 27) {
         endWalkThrough();
       } else if (disableAllAction) {
-        event.preventDefault();
-        return;
+        return event.preventDefault();
       }
     }
-    // disable input
     if (audioIsPlaying) {
-      event.preventDefault();
-      return;
+      return event.preventDefault();
     }
-    if (wordCompleted) {
-      event.preventDefault();
-    }
-    var lastCardState = cardStateList[cardStateList.length - 1];
     if (
       indexCurrentCard === romajiList.length - 1 &&
       (lastCardState === "correct" || lastCardState === "hinted")
@@ -226,31 +222,31 @@ class CharInput extends React.Component {
     }
     // keycode 65 to 90 represents a-z
     if (
-      ((event.which >= 65 && event.which <= 90) || event.which === 222) &&
+      ((which >= 65 && which <= 90) || which === 222) &&
       !onIncorrectCard &&
       !wordCompleted
-      //&& !onHintedCard
     ) {
       var key =
-        event.which === 222
+        which === 222
           ? "'"
-          : String.fromCharCode(event.which).toLowerCase();
+          : String.fromCharCode(which).toLowerCase();
       this.props.onKeyPress(key);
       this.inputChecker.checkInput(key);
+      onInputBoxChange(event.target.value);
     } else {
       event.preventDefault();
-      if (event.which === 32) { // space
-        this.buttonClickOrSpacePressHandler(event.target);
-      } else if (event.which === 8) { // backspace
-        this.deleteIncorrectInput(event.target);
-      } else if (event.which === 13) { // enter
-        this.goToNextWord(event.target);
-        // this.fillHintedCharacter(event.target);
+      if (which === 32) { // space
+        this.buttonClickOrSpacePressHandler(event);
+      } else if (which === 8) { // backspace
+        this.deleteIncorrectInput(event);
+      } else if (which === 13) { // enter
+        this.goToNextWord(event);
+        // this.fillHintedCharacter(event);
       }
     }
   };
 
-  deleteIncorrectInput(eventTarget) {
+  deleteIncorrectInput(event) {
     const {
       onIncorrectCard,
       curWrongChar,
@@ -258,25 +254,24 @@ class CharInput extends React.Component {
       onSpacePress,
       resetRomajiNotInDictAlert,
     } = this.props;
-
+    const { value } = event.target;
     if (onIncorrectCard) {
       // delete wrong input from inputBox
-      eventTarget.value = eventTarget.value.slice(0, -curWrongChar.length);
-      onInputBoxChange(eventTarget.value);
+      event.target.value = value.slice(0, -curWrongChar.length);
+      onInputBoxChange(value);
       onSpacePress("CONTINUE_AFTER_ERROR");
       resetRomajiNotInDictAlert();
     } else {
       // clear current input
-      console.log("DELETE");
-      this.clearCurrentInput(eventTarget);
+      this.clearCurrentInput(event);
     }
   };
 
-  clearInputBox(eventTarget) {
-    eventTarget.value = "";
+  clearInputBox(event) {
+    event.target.value = "";
   };
 
-  goToNextWord(eventTarget) {
+  goToNextWord(event) {
     const {
       onSpacePress,
       onInputBoxChange,
@@ -291,12 +286,12 @@ class CharInput extends React.Component {
       firstTimeCompleteWordSinceWalkThrough()
       moveToNextWord(requestedWord, thisApp);
       onSpacePress("CONTINUE_AFTER_COMPLETE");
-      eventTarget.value = "";
-      onInputBoxChange(eventTarget.value);
+      event.target.value = "";
+      onInputBoxChange(event.target.value);
     }
   }
 
-  buttonClickOrSpacePressHandler = (eventTarget) => {
+  buttonClickOrSpacePressHandler = (event) => {
     const {
       onIncorrectCard,
       onSpacePress,
@@ -316,7 +311,7 @@ class CharInput extends React.Component {
     }
 
     if (onIncorrectCard) {
-      this.deleteIncorrectInput(eventTarget)
+      this.deleteIncorrectInput(event)
     } else if (!onIncorrectCard && !onHintedCard && !wordCompleted) {
       // ask for hint
       this.props.requestModuleInfo(this.props.thisApp);
@@ -330,20 +325,21 @@ class CharInput extends React.Component {
       updateCharScore(user_uid, currentChar, "+0");
       this.props.requestModuleInfo(this.props.thisApp);
       // clear current input
-      this.clearCurrentInput(eventTarget);
+      this.clearCurrentInput(event);
     } else if (wordCompleted) {
-      this.goToNextWord(eventTarget)
+      this.goToNextWord(event)
     } else if (onHintedCard) {
-      // this.fillHintedCharacter(eventTarget);
+      // this.fillHintedCharacter(event);
     }
   };
 
-  clearCurrentInput = (eventTarget) => {
+  clearCurrentInput = (event) => {
     const {onInputBoxChange} = this.props;
-    eventTarget.value = this.inputChecker.buffer.length
-      ? eventTarget.value.slice(0, -this.inputChecker.buffer.length)
-      : eventTarget.value;
-    onInputBoxChange(eventTarget.value);
+
+    event.target.value = this.inputChecker.buffer.length
+      ? event.target.value.slice(0, -this.inputChecker.buffer.length)
+      : event.target.value;
+    onInputBoxChange(event.target.value);
 
     // clear inputChecker buffer
     this.inputChecker.checkInput("clearBuffer");
@@ -356,7 +352,7 @@ class CharInput extends React.Component {
           className="input-box"
           placeholder="Your input..."
           inputProps={{ "aria-label": "description" }}
-          onChange={this.props.onInputBoxChange}
+          // onChange={this.props.onInputBoxChange} // this line cause tons of warnings
           onKeyDown={this.onKeyDown}
           spellCheck={false}
           autoFocus

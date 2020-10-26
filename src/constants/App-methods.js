@@ -158,8 +158,8 @@ const transitionToNextWord = async (word, thisApp) => {
     );
     updateWord(word.vocab_kana, romajiList);
     setCurrentChar(word.vocab_kana.charAt(0), romajiList[0]);
-    const word_audio = new Audio(audio_url);
     const audio_url = `${MEDIA_BASE_URL_WORD}${parseAudio(word.vocab_sound_local)}`
+    const word_audio = new Audio(audio_url);
     word_audio.on("loadedmetadata", (event) => {
       thisApp.setState({
         word_audio_duration: event.target.duration,
