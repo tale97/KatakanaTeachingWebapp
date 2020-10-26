@@ -1,6 +1,6 @@
 {
-  "name": "japanese-reading",
-  "homepage": "https://dieulien.github.io/japanese-reading/",
+  "name": "Katakana-Teaching-Webapp",
+  "homepage": "https://tale97.github.io/KatakanaTeachingWebapp/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
