@@ -7,6 +7,7 @@ import Music from "./Music";
 import { MEDIA_BASE_URL_SENTENCE, MEDIA_BASE_URL_WORD } from "../constants";
 import Divider from "@material-ui/core/Divider";
 import "../scss/components/WordCard.scss";
+import { parseAudio } from "../constants/App-methods";
 
 const useStyles = makeStyles({
   root: {
@@ -31,10 +32,6 @@ export default function WordCard({ wordInfo, word_audio_duration, autoplayAudio 
   var el = document.createElement("html");
   el.innerHTML = "<b>bolded text</b>";
   const sentenceSegments = parseoutBoldText(wordInfo.sentence_expression);
-
-  const parseAudio = (audio_string) => {
-    return audio_string.slice(7, audio_string.length - 1);
-  };
 
   return (
     <Card className={`${classes.root} word-card `}>

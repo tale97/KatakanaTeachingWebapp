@@ -35,13 +35,7 @@ import {
   loadUserToStore,
 } from "../actions";
 import {
-  GETWORD_URL,
-  UPDATECHARSCORE_URL,
-  WORDSCORE_URL,
-  MEDIA_BASE_URL_WORD,
   USER_TIME_LIMIT_IN_MINUTES,
-  GETMODULEINFO_URL,
-  GETCHAR_URL,
 } from "../constants";
 import {
   listOfPraises,
@@ -55,11 +49,9 @@ import {
 import {
   parseJapaneseWord,
   updateCharScore,
-  parseAudio,
   requestModuleInfo,
-  requestNewWordPromise,
-  requestNewCharPromise,
   moveToNextWord,
+  requestNewWord,
 } from "../constants/App-methods";
 import LogRocket from "logrocket";
 import 'intro.js/introjs.css';
@@ -154,7 +146,6 @@ class App extends Component {
   }
 
   componentDidMount = () => {
-    console.log("Running word-based version...")
     this.props.resetStore();
     this.requestAndUpdateWord();
     this.requestModuleInfo(this);
@@ -179,12 +170,12 @@ class App extends Component {
     }
     if (this.props.wordCompleted 
         && this.props.wordCompleted !== prevProps.wordCompleted) {
-      this.requestNewWord();
+      this.requestNewWord(this);
     }
     if (this.state.route === "home") {
       setTimeout(() => {
         this.setState({ openEndDialogue: true });
-      }, USER_TIME_LIMIT_IN_MINUTES * 60000); //USER_TIME_LIMIT_IN_MINUTES
+      }, USER_TIME_LIMIT_IN_MINUTES * 60000);
     }
     if (this.state.steps1Enabled === prevState.steps1Enabled
         && !this.state.transitionedFromSteps1ToSteps2) {
@@ -228,9 +219,7 @@ class App extends Component {
       userInfo.joined = joined;
       return { userInfo };
     });
-
     this.props.loadUserToStore(user);
-
     LogRocket.identify(user_uid, {
       name: name,
       email: email,
@@ -242,26 +231,13 @@ class App extends Component {
   onRouteChange = (route) => {
     this.setState({ route: route });
   };
-
-  parseJapaneseWord = parseJapaneseWord;
   updateCharScore = updateCharScore;
-  parseAudio = parseAudio;
   requestModuleInfo = requestModuleInfo;
-  requestNewWordPromise = requestNewWordPromise;
-  requestNewCharPromise = requestNewCharPromise;
-  requestNewWord = async () => {
-    if (this.props.version === 1) {
-      return this.requestNewWordPromise(this);
-    } else if (this.props.version === 2) {
-      return this.requestNewCharPromise(this);
-    } else {
-      console.log(`version should either be 1 or 2`);
-    }
-  };
+  requestNewWord = requestNewWord;
   moveToNextWord = moveToNextWord;
 
   requestAndUpdateWord = async () => {
-    await this.requestNewWord();
+    await this.requestNewWord(this);
     this.moveToNextWord(this.state.requestedWord, this);
   };
 
@@ -272,7 +248,6 @@ class App extends Component {
   onClickCard = (event) => {
     const kana_char = event.target.innerText;
     this.setState({ clickedJapChar: kana_char });
-
     // unclick
     if (this.state.clickedJapChar === kana_char) {
       this.setState({ clickedJapChar: "" });
@@ -765,7 +740,7 @@ class App extends Component {
                     </Grid>
                     <Grid item className="japanese-word-area">
                       <CharList
-                        charsToRead={this.parseJapaneseWord(currentWord)}
+                        charsToRead={parseJapaneseWord(currentWord)}
                         onClickCard={this.onClickCard}
                         clickedJapChar={this.state.clickedJapChar}
                       />

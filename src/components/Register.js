@@ -6,9 +6,8 @@ import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import Link from "@material-ui/core/Link";
-import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core/styles";
-import { REGISTER_URL } from "../constants";
+import { REGISTER_URL, VERSION } from "../constants";
 import "../scss/components/Signin.scss";
 import TextBlock from "./TextBlock";
 import LoadingPopup from "./LoadingPopup";
@@ -16,7 +15,6 @@ import LoadingPopup from "./LoadingPopup";
 import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
 import FontDownloadIcon from "@material-ui/icons/FontDownload";
 import FeedbackIcon from "@material-ui/icons/Feedback";
-import SubtitlesIcon from "@material-ui/icons/Subtitles";
 import InsertChartIcon from '@material-ui/icons/InsertChart';
 
 const useStyles = (theme) => ({
@@ -160,7 +158,7 @@ class Register extends React.Component {
           <div className="header">
             <h1 className="title">JapanEZ</h1>
             <p className="subtitle">
-              Learn Japanese Katakana as you explore English-like Japanese words
+              Learn Japanese Katakana in an interactive way {VERSION === 1 ? " as you explore English-like Japanese words" : ""}
             </p>
           </div>
           <div className="signin">
@@ -254,11 +252,15 @@ class Register extends React.Component {
               title="Built-in mnemonics and smart feedback"
               description="Receive contextual feedback as you progress through the app. Use humourous illustrations and mnemonics to help you memorize characters."
             />
-            <TextBlock
-              icon={<FontDownloadIcon fontSize="large" />}
-              title="Learn words that sound like English"
-              description="You'd be surprised how many common Japanese words you've already known. For example, the Japnese word for tomato is トマト, which is pronounced 'to-mah-to'."
-            />
+            { VERSION === 1 ? (
+              <TextBlock
+                icon={<FontDownloadIcon fontSize="large" />}
+                title="Learn words that sound like English"
+                description="You'd be surprised how many common Japanese words you've already known. For example, the Japnese word for tomato is トマト, which is pronounced 'to-mah-to'."
+              />
+            ) : (
+              null
+            )}
             <TextBlock
               icon={<InsertChartIcon fontSize="large" />}
               title="Easily keep track of your progress"

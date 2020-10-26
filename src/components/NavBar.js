@@ -20,6 +20,7 @@ import AssessmentOutlinedIcon from "@material-ui/icons/AssessmentOutlined";
 import HelpOutlineOutlinedIcon from "@material-ui/icons/HelpOutlineOutlined";
 import TranslateOutlinedIcon from '@material-ui/icons/TranslateOutlined';
 import DirectionsOutlinedIcon from '@material-ui/icons/DirectionsOutlined';
+import { VERSION } from "../constants";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,6 +44,14 @@ const NavBar = (props) => {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const instructionIntro = () => {
+    return VERSION === 1 ? (
+      `Your task is to type the pronunciation of Japanese words and learn Japanese Katakana characters on the way.`
+    ) : (
+      `Your task is to type the pronunciation of Japanese Katakana characters.`
+    )
+  }
 
   return (
     <div className={classes.root}>
@@ -122,7 +131,7 @@ const NavBar = (props) => {
           <DialogTitle id="alert-dialog-title">{"Instruction"}</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              <p>Your task is to type the pronunciation of Japanese words and learn Japanese katakana characters on the way. </p>
+              <p>{instructionIntro()}</p>
 
               <p>If you don't know a Japanese character, press SPACE to learn it. But don't abuse this feature! Try to learn the character and type them out. That's the only way you can progress through this app!</p>
 

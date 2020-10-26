@@ -6,6 +6,7 @@ import {
   USER_TIME_LIMIT_IN_MINUTES,
   GETMODULEINFO_URL,
   GETCHAR_URL,
+  VERSION,
 } from "../constants";
 import { katakanaToRomaji } from "../jap-char";
 
@@ -63,12 +64,13 @@ const parseAudio = (audio_string) => {
 };
 
 const requestModuleInfo = (thisApp) => {
+  const version = VERSION === 2 ? "2" : "";
   fetch(GETMODULEINFO_URL, {
     method: "post",
     headers: { "Content-Type": "application/json"},
     body: JSON.stringify({
       userId: thisApp.state.userInfo.id,
-      version: "",
+      version: version,
     }),
   })
   .then((res) => res.json())
@@ -130,24 +132,34 @@ const requestNewCharPromise = async (thisApp) => {
   });
 };
 
+const requestNewWord = async (thisApp) => {
+  if (thisApp.props.version === 1) {
+    return requestNewWordPromise(thisApp);
+  } else if (thisApp.props.version === 2) {
+    return requestNewCharPromise(thisApp);
+  } else {
+    console.log(`version should either be 1 or 2`);
+  }
+};
+
 const transitionToNextWord = async (word, thisApp) => {
   const { setCurrentChar, updateWord } = thisApp.props;
   var romajiList = [];
   thisApp.requestModuleInfo(thisApp);
   if (Object.keys(word).includes("word")) {
-    romajiList = thisApp.parseJapaneseWord(word.word).map(
+    romajiList = parseJapaneseWord(word.word).map(
     (kana_char) => kana_char.romaji
     );
     updateWord(word.word, romajiList);
     setCurrentChar(word.word.charAt(0), romajiList[0]);
   } else {
-    romajiList = thisApp.parseJapaneseWord(word.vocab_kana).map(
+    romajiList = parseJapaneseWord(word.vocab_kana).map(
       (kana_char) => kana_char.romaji
     );
     updateWord(word.vocab_kana, romajiList);
     setCurrentChar(word.vocab_kana.charAt(0), romajiList[0]);
     const word_audio = new Audio(audio_url);
-    const audio_url = `${MEDIA_BASE_URL_WORD}${thisApp.parseAudio(word.vocab_sound_local)}`
+    const audio_url = `${MEDIA_BASE_URL_WORD}${parseAudio(word.vocab_sound_local)}`
     word_audio.addEventListener("loadedmetadata", (event) => {
       console.log("audio duration", event.target.duration)
       thisApp.setState({
@@ -188,4 +200,5 @@ export {
   transitionToNextWord,
   transitionToNextChar,
   moveToNextWord,
+  requestNewWord,
 };
