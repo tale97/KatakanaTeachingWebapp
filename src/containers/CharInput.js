@@ -156,17 +156,16 @@ class CharInput extends React.Component {
 
     if (char === romajiList[indexCurrentCard] && !onHintedCard) {
       updateCharScore(user_uid, userInputChar, "+1");
-      this.props.requestModuleInfo(this.props.thisApp);
       onCorrectChar();
       onCompleteChar(Date.now(), "correct");
-
       const newRomaji = romajiList[indexCurrentCard + 1];
       const newKana = currentWord[indexCurrentCard + 1];
-      setCurrentChar(newKana, newRomaji);
-
+      setCurrentChar(newKana, newRomaji); 
       if (indexCurrentCard === romajiList.length - 1) {
         onWordCompletion();
       }
+      console.log(`CORRECT!`)
+      this.props.requestModuleInfo(this.props.thisApp);
     } else if (char === romajiList[indexCurrentCard] && onHintedCard) {
       if (indexCurrentCard === romajiList.length - 1) {
         onWordCompletion();
@@ -320,7 +319,6 @@ class CharInput extends React.Component {
       this.deleteIncorrectInput(eventTarget)
     } else if (!onIncorrectCard && !onHintedCard && !wordCompleted) {
       // ask for hint
-      console.log("Requesting hint...")
       this.props.requestModuleInfo(this.props.thisApp);
       onSpacePress("REQUEST_HINT");
       onCompleteChar(Date.now(), "hinted");

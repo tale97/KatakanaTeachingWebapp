@@ -1,0 +1,98 @@
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import Typography from "@material-ui/core/Typography";
+import Music from "./Music";
+import { MEDIA_BASE_URL_SENTENCE, MEDIA_BASE_URL_WORD } from "../constants";
+import Divider from "@material-ui/core/Divider";
+import "../scss/components/WordCard.scss";
+import { parseAudio } from "../constants/App-methods";
+
+const useStyles = makeStyles({
+  root: {
+    minWidth: 275,
+  },
+  title: {
+    fontSize: 14,
+  },
+  pos: {
+    marginBottom: 12,
+  },
+});
+
+const parseoutBoldText = (sentence) => {
+  // replace <b> and </b> with comma
+  sentence = sentence.replace(/<\/?b>/g, ",");
+  return sentence.split(",");
+};
+
+export default function WordCard({ wordInfo, word_audio_duration, autoplayAudio }) {
+  const classes = useStyles();
+  var el = document.createElement("html");
+  el.innerHTML = "<b>bolded text</b>";
+  const sentenceSegments = parseoutBoldText(wordInfo.sentence_expression);
+
+  return (
+    <Card className={`${classes.root} word-card `}>
+      <CardContent>
+        <Typography
+          className={classes.title}
+          color="textSecondary"
+          gutterBottom
+        >
+          <div className="wordcard-subtext">Word Meaning</div>
+        </Typography>
+        <Typography variant="h5" component="h2">
+          <div className="wordcard-text">
+            {wordInfo.vocab_meaning} ({wordInfo.vocab_pos})
+          </div>
+        </Typography>
+        <Music
+          audioLink={`${MEDIA_BASE_URL_WORD}${parseAudio(
+            wordInfo.vocab_sound_local
+          )}`}
+          delay={0}
+          noStoreUpdateWhenEnded={true}
+          autoplay={autoplayAudio}
+        />
+        <Divider style={{ marginTop: "calc(5px + 0.5vh)" }} />
+        <Typography
+          className={classes.title}
+          color="textSecondary"
+          gutterBottom
+        >
+          <div className="wordcard-subtext">Sample Sentence</div>
+        </Typography>
+        <Typography variant="h5" component="h2">
+          <div className="wordcard-text">
+            {sentenceSegments[0]}
+            <b className="vocab-word">{sentenceSegments[1]}</b>
+            {sentenceSegments[2]}
+          </div>
+        </Typography>
+        <Music
+          audioLink={`${MEDIA_BASE_URL_SENTENCE}${parseAudio(
+            wordInfo.sentence_sound_local
+          )}`}
+          delay={word_audio_duration * 1000 + 750}
+          noStoreUpdateWhenEnded={false}
+          autoplay={autoplayAudio}
+        />
+        <Divider style={{ marginTop: "calc(5px + 0.5vh)" }} />
+        <Typography
+          className={classes.title}
+          color="textSecondary"
+          gutterBottom
+        >
+          <div className="wordcard-subtext">Sentence Meaning</div>
+        </Typography>
+        <Typography variant="body2" component="p">
+          <div style={{ fontSize: "calc(12px + 0.4vh)" }}>
+            {wordInfo.sentence_meaning}
+          </div>
+        </Typography>
+      </CardContent>
+    </Card>
+  );
+}

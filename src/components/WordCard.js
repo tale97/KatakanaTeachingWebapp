@@ -7,7 +7,6 @@ import Music from "./Music";
 import { MEDIA_BASE_URL_SENTENCE, MEDIA_BASE_URL_WORD } from "../constants";
 import Divider from "@material-ui/core/Divider";
 import "../scss/components/WordCard.scss";
-import { parseAudio } from "../constants/App-methods";
 
 const useStyles = makeStyles({
   root: {
@@ -21,77 +20,61 @@ const useStyles = makeStyles({
   },
 });
 
-const parseoutBoldText = (sentence) => {
-  // replace <b> and </b> with comma
-  sentence = sentence.replace(/<\/?b>/g, ",");
-  return sentence.split(",");
-};
-
 export default function WordCard({ wordInfo, word_audio_duration, autoplayAudio }) {
   const classes = useStyles();
   var el = document.createElement("html");
   el.innerHTML = "<b>bolded text</b>";
-  const sentenceSegments = parseoutBoldText(wordInfo.sentence_expression);
+
+  var katakana_word = null;
+  var word_meaning = null;
+  var word_pos = null;
+
+  if (Object.keys(wordInfo).includes("word")) {
+    katakana_word = wordInfo.word;
+    word_meaning = wordInfo.meaning;
+    word_pos = wordInfo.part_of_speech;
+  } else {
+    katakana_word = wordInfo.vocab_kana;
+    word_meaning = wordInfo.vocab_meaning;
+    word_pos = wordInfo.vocab_pos;
+  }
+
+  // fix pos format from marshallyin site
+  if (word_pos.includes("&")) {
+    word_pos = word_pos.replace(/&/g, " & ");
+  }
+  if (word_pos.includes("suru-Verb")) {
+    word_pos = word_pos.replace(/suru-Verb/g, "Verb");
+  }
+  if (word_pos.includes("na-Adj")) {
+    word_pos = word_pos.replace(/na-Adj/g, "Adj");
+  }
 
   return (
     <Card className={`${classes.root} word-card `}>
       <CardContent>
+        
         <Typography
-          className={classes.title}
+          className={`${classes.title}`}
           color="textSecondary"
           gutterBottom
         >
-          <div className="wordcard-subtext">Word Meaning</div>
+          <div className="wordcard-subtext subtext-meaning">Word Meaning</div>
         </Typography>
-        <Typography variant="h5" component="h2">
-          <div className="wordcard-text">
-            {wordInfo.vocab_meaning} ({wordInfo.vocab_pos})
-          </div>
-        </Typography>
-        <Music
-          audioLink={`${MEDIA_BASE_URL_WORD}${parseAudio(
-            wordInfo.vocab_sound_local
-          )}`}
-          delay={0}
-          noStoreUpdateWhenEnded={true}
-          autoplay={autoplayAudio}
-        />
+        <h3 className="bolded-style">{word_meaning}</h3>
         <Divider style={{ marginTop: "calc(5px + 0.5vh)" }} />
         <Typography
           className={classes.title}
           color="textSecondary"
           gutterBottom
         >
-          <div className="wordcard-subtext">Sample Sentence</div>
+          <div className="wordcard-subtext subtext-pos">Part of Speech</div>
         </Typography>
-        <Typography variant="h5" component="h2">
-          <div className="wordcard-text">
-            {sentenceSegments[0]}
-            <b className="vocab-word">{sentenceSegments[1]}</b>
-            {sentenceSegments[2]}
+        <Typography variant="h3" component="h4">
+          <div className="wordcard-pos">
+            {word_pos}
           </div>
-        </Typography>
-        <Music
-          audioLink={`${MEDIA_BASE_URL_SENTENCE}${parseAudio(
-            wordInfo.sentence_sound_local
-          )}`}
-          delay={word_audio_duration * 1000 + 750}
-          noStoreUpdateWhenEnded={false}
-          autoplay={autoplayAudio}
-        />
-        <Divider style={{ marginTop: "calc(5px + 0.5vh)" }} />
-        <Typography
-          className={classes.title}
-          color="textSecondary"
-          gutterBottom
-        >
-          <div className="wordcard-subtext">Sentence Meaning</div>
-        </Typography>
-        <Typography variant="body2" component="p">
-          <div style={{ fontSize: "calc(12px + 0.4vh)" }}>
-            {wordInfo.sentence_meaning}
-          </div>
-        </Typography>
+        </Typography>  
       </CardContent>
     </Card>
   );

@@ -9,7 +9,7 @@ class OutsideAlerter extends React.Component {
   };
 
   componentWillUnmount = () => {
-    document.addEventListener("mousedown", this.handleClickOutside);
+    document.removeEventListener("mousedown", this.handleClickOutside);
   };
 
   setWrapperRef = (node) => {

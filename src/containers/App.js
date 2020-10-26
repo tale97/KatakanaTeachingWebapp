@@ -18,7 +18,7 @@ import {
 } from "@material-ui/core";
 import Signin from "../components/Signin";
 import Register from "../components/Register";
-import WordCard2 from "../components/WordCard2";
+import WordCard from "../components/WordCard";
 import OutsideAlerter from "../components/OutsideAlerter";
 import Footer from "../components/Footer";
 import MessageBar from "../components/MessageBar";
@@ -286,7 +286,7 @@ class App extends Component {
     if (this.props.wordCompleted && this.props.version === 1) {
       return (
         <Grid item>
-          <WordCard2
+          <WordCard
             wordInfo={this.state.currentWordInfo}
             word_audio_duration={this.state.word_audio_duration}
             autoplayAudio={this.state.checkedAudioAutoPlay}
@@ -345,7 +345,7 @@ class App extends Component {
       if (cardStateSet.size === 1 && cardStateSet.has("correct")) {
         return `${this.randomItem(listOfPraises)} Press spacebar to continue.`;
       } else {
-        return "Click on a character or press spacebar to continue.";
+        return `Click on ${this.props.version === 1 ? 'a' : 'the'} character or press spacebar to continue.`;
       }
     } else {
       // return `I will be giving you feedback as you use the app.`;
