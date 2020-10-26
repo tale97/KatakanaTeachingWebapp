@@ -126,6 +126,10 @@ const NavBar = (props) => {
 
               <p>If you don't know a Japanese character, press SPACE to learn it. But don't abuse this feature! Try to learn the character and type them out. That's the only way you can progress through this app!</p>
 
+              <p>{"If you have any issue using the app, go to this link: "}
+              <a style={{ color: "black" }} href="https://harvard.az1.qualtrics.com/jfe/form/SV_26xpmT4DEWO35n7">https://harvard.az1.qualtrics.com/jfe/form/SV_26xpmT4DEWO35n7</a>
+              </p>
+
               <p>Happy learning!</p>
 
             </DialogContentText>
