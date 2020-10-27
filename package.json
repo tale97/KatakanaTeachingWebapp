@@ -1,6 +1,6 @@
 {
-  "name": "katakana-teaching-webapp-v2",
-  "homepage": "https://tale97.github.io/KatakanaTeachingWebapp-v2/",
+  "name": "katakana-teaching-webapp",
+  "homepage": "https://tale97.github.io/KatakanaTeachingWebapp/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -41,7 +41,7 @@
   },
   "eslintConfig": {
     "extends": "react-app"
-  },
+  }, 
   "browserslist": {
     "production": [
       ">0.2%",
