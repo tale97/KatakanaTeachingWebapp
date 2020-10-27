@@ -6,8 +6,8 @@ span {
 }
 
 .dot {
-  height: 12px;
-  width: 12px;
+  height: calc(2px + 1vh);
+  width: calc(2px + 1vh);
   border-radius: 50%;
   display: inline-block;
 }
@@ -36,7 +36,7 @@ span {
 }
 
 .flipcard-back {
-  font-size: 0.95rem;
+  font-size: calc(5px + 1vh);
   background: white;
   box-sizing: border-box; // make border inside of div on not on its edge
   border: 2px solid $primary-color;

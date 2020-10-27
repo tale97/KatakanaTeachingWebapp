@@ -5,7 +5,6 @@ import Popover from "@material-ui/core/Popover";
 import Typography from "@material-ui/core/Typography";
 import Skeleton from '@material-ui/lab/Skeleton';
 
-
 // links below shows how to transition between gradient background
 // https://medium.com/@dave_lunny/animating-css-gradients-using-only-css-d2fd7671e759
 
@@ -15,12 +14,22 @@ const useStyles = makeStyles((theme) => ({
   },
   cardBG: {
     background: (props) => {
-      return props.correctPercent === 0 && props.hintedPercent === 0
+      const correctPercent = calcCorrectPercent(props.correctNum, props.hintedNum);
+      return props.correctNum === 0 && props.hintedNum === 0
         ? "#d6d6d6"
-        : `linear-gradient(0deg, green 0% ${props.correctPercent}%, #f2b50c ${props.correctPercent}% ${props.hintedPercent}%)`;
+        : `linear-gradient(0deg, green 0% ${correctPercent}%, 
+          #f2b50c ${correctPercent}% 100%)`;
     },
   },
 }));
+
+const calcCorrectPercent = (correctNum, hintNum) => {
+  if (hintNum > 0) {
+    return (correctNum / (correctNum + hintNum)) * 100;
+  } else {
+    return 100;
+  }; 
+}
 
 function SmallChar(props) {
   const { char, correctNum, hintedNum, isLoading } = props;
@@ -87,8 +96,6 @@ function SmallChar(props) {
         </div>
       )}
     </div>
-
-
   );
 }
 

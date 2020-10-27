@@ -4,6 +4,7 @@ import { Grid } from "@material-ui/core";
 import { connect } from "react-redux";
 import { setNewWordTime } from "../actions";
 import "../scss/components/Char.scss";
+import Skeleton from '@material-ui/lab/Skeleton';
 
 const mapStateToProps = (state) => {
   return {
@@ -85,22 +86,41 @@ class CharList extends React.Component {
             cardState={this.setCardState(idx, item.char)}
             onClickCard={this.props.onClickCard}
             wordCompleted={this.props.wordCompleted}
+            isLoading={this.props.charsToRead.length === 0}
           />
         </Grid>
       );
     });
 
     return (
-      <Grid
-        container
-        className="japanese-word"
-        direction="row"
-        justify="center"
-        alignItems="center"
-        spacing="0"
-      >
-        {charsArrayDisplay}
-      </Grid>
+      charsArrayDisplay.length > 0 ? (
+        <Grid
+          container
+          className="japanese-word"
+          direction="row"
+          justify="center"
+          alignItems="center"
+          spacing="0"
+        >
+          {charsArrayDisplay}
+        </Grid>
+      ) : (
+        <Grid
+          container
+          className="word-skeleton"
+          direction="row"
+          justify="center"
+          alignItems="center"
+          spacing="0"
+        >
+          <Skeleton 
+            className="word-skeleton"
+            height={"calc(50px + 4vh)"}
+            width={"calc(170px + 15vh + 2vh)"}
+          />
+
+        </Grid>
+      )
     );
   }
 }

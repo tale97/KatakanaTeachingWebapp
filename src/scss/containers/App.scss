@@ -40,11 +40,11 @@
 }
 
 .audio-control {
-  top: 240px;
+  top: calc(160px + 8vh);
 }
 
 .message-control {
-  top: 200px;
+  top: calc(120px + 8vh);
 }
 
 .blue-button-visibility-control {

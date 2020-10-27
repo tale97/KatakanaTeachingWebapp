@@ -107,7 +107,7 @@ class App extends Component {
       //   email: "",
       //   joined: "",
       // },
-      requestedWord: `place_holder`,
+      requestedWord: null,
       charResultList: {},
       isFetchingCharResult: false,
 
@@ -144,6 +144,7 @@ class App extends Component {
         && prevState.route === "register") {
       this.setState({ walkThroughEnabled: false }) // TODO should be true, if want to enable by default when login first time
       this.setState({ firstIntroductionEnabled: true });
+      this.setState({ requestNewWord: null });
       this.requestModuleInfo(this);
     } 
     if (this.state.userInfo.id !== prevState.userInfo.id) {
@@ -163,6 +164,10 @@ class App extends Component {
     if (this.state.requestedWord !== prevState.requestedWord) {
       this.setState({ randomIndex: Math.floor(Math.random() * 8) })
     }
+    // if (this.state.route === "home" 
+    //   && (prevState.route === "register" || prevState.route === "login")) {
+    //   this.setState({ requestNewWord: null });
+    // }
   };
 
   loadUser = (user) => {
@@ -296,7 +301,7 @@ class App extends Component {
       wrongCharList,
       romajiList,
     } = this.props;
-    if (this.state.isFetchingCharResult) {
+    if (this.state.isFetchingCharResult || !this.state.requestedWord) {
       return <CircularIndeterminate isOpen={true}/>
     }
     if (this.state.route === "progress") {
@@ -306,7 +311,7 @@ class App extends Component {
     }
     if (this.state.route === "katakanaChart") {
       return `
-        Hover over each card to see its pronunciation! Characters you've gotten correct are highlighted in color.
+        Hover over each card to see its pronunciation! Characters you've already seen are highlighted in color.
       `;
     }
     if (this.state.walkThroughEnabled) {
@@ -394,6 +399,7 @@ class App extends Component {
   }
   
   renderRoute = (route) => {
+    console.log(`DEBUG ${this.state.requestedWord}`)
     switch (route) {
       case "progress":
         return (
@@ -586,18 +592,27 @@ class App extends Component {
                         clickedJapChar={this.state.clickedJapChar}
                       />
                     </Grid>
-                    <div className="module-level">
-                      {`Level ${this.state.moduleInfo ? this.state.moduleInfo.moduleIndex : 0}`}
-                    </div>
-                    <Grid item>
-                      <Box
-                        className="progress-bar"
-                      >
-                        <LinearDeterminate 
-                          moduleInfo={this.state.moduleInfo} 
-                        />
-                      </Box>
-                    </Grid>
+
+                    {this.state.requestedWord ? (
+                      <div>
+                        <div className="module-level">
+                          {`Level ${this.state.moduleInfo ? this.state.moduleInfo.moduleIndex : 0}`}
+                        </div>
+                        <Grid item>
+                          <Box
+                            className="progress-bar"
+                          >
+                            <LinearDeterminate 
+                              moduleInfo={this.state.moduleInfo} 
+                            />
+                          </Box>
+                        </Grid>
+                      </div>
+                    ) : (
+                      null
+                    )}
+
+
                   </div>
                   <Grid item className="card-area">
                     <Grid
