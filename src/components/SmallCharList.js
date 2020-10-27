@@ -39,7 +39,13 @@ class SmallCharList extends React.Component {
 
   computeCorrectPercentage = (resultList) => {
     var total_correct = 0;
-    if (resultList.length === 0) {
+    var correctAndHintedNum = resultList.reduce((acc, item) => {
+      if (item !== "incorrect") {
+        acc += 1;
+      }
+      return acc;
+    }, 0);
+    if (correctAndHintedNum === 0) {
       return -1;
     }
     resultList.forEach((result) => {
@@ -51,8 +57,30 @@ class SmallCharList extends React.Component {
   computeCorrectNum = (resultList) => {
     return resultList.length === 0
       ? 0
+      : resultList.reduce((acc, item) => {
+          if (item === "correct") {
+            acc += 1;
+          }
+          return acc;
+        }, 0);
+  };
+
+  computeIncorrectNum = (resultList) => {
+    return resultList.length === 0
+      ? 0
       : resultList.reduce((acc, val) => {
-          if (val === "correct") {
+          if (val === "incorrect") {
+            acc += 1;
+          }
+          return acc;
+        }, 0);
+  };
+
+  computeHintedNum = (resultList) => {
+    return resultList.length === 0
+      ? 0
+      : resultList.reduce((acc, val) => {
+          if (val === "hinted") {
             acc += 1;
           }
           return acc;
@@ -80,6 +108,7 @@ class SmallCharList extends React.Component {
           ); 
       });
     } else {
+      console.log(`DEBUG 二 ${JSON.stringify(this.state.charResultList["二"])}`)
       charsArrayDisplay = limitedKatakanaList.map((kana, idx) => {
         if (kana !== "clearBuffer") {
           var correctPercentage = 0;
@@ -87,7 +116,10 @@ class SmallCharList extends React.Component {
           var correctNum = this.computeCorrectNum(
             this.state.charResultList[kana]
           );
-          var hintedNum = this.state.charResultList[kana].length - correctNum;
+          var incorrectNum = this.computeIncorrectNum(
+            this.state.charResultList[kana]
+          );
+          var hintedNum = this.state.charResultList[kana].length - correctNum - incorrectNum;
   
           if (Object.keys(this.state.charResultList).length > 0) {
             correctPercentage = this.computeCorrectPercentage(

@@ -56,8 +56,10 @@ class KatakanaChart extends React.Component {
         );
       });
     } else {
+      console.log(`DEBUG 二 ${JSON.stringify(this.state.charResultList["二"])}`)
       katakanaArray = limitedKatakanaList.map((kana, idx) => {
         kana_filteredResultList = this.state.charResultList[kana].filter(resultType => resultType !== "incorrect")
+        console.log(`${kana}: ${kana_filteredResultList}`);
         return (
           <Grid item key={idx}>
             <KatakanaChar
