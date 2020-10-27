@@ -94,19 +94,13 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      route: "home", // should be register
+      route: "register", // should be register
       userInfo: {
-        email: "developer@g.com",
-        joined: "2020-10-26T14:19:40.915Z",
-        name: "Developer",
-        id: "5ab535f5-b0eb-4a9b-98b5-b6b86cd8d328",
+        id: "",
+        name: "",
+        email: "",
+        joined: "",
       },
-      // userInfo: {
-      //   id: "",
-      //   name: "",
-      //   email: "",
-      //   joined: "",
-      // },
       requestedWord: null,
       charResultList: {},
       isFetchingCharResult: false,
