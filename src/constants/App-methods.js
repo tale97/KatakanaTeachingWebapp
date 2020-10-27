@@ -23,19 +23,7 @@ const parseJapaneseWord = (katakana_word) => {
 };
 
 const updateScoreThenGetModule = async (thisApp, user_uid, katakana_char, score) => {
-  // const response = await fetch(UPDATECHARSCORE_URL, {
-  //   method: "post",
-  //   headers: { "Content-Type": "application/json" },
-  //   body: JSON.stringify({
-  //     user_uid: user_uid,
-  //     char: katakana_char,
-  //     score: score,
-  //   }),
-  // });
-  // await response.json();
-  // requestModuleInfo(thisApp);
-
-  fetch(UPDATECHARSCORE_URL, {
+  const response = await fetch(UPDATECHARSCORE_URL, {
     method: "post",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -43,15 +31,9 @@ const updateScoreThenGetModule = async (thisApp, user_uid, katakana_char, score)
       char: katakana_char,
       score: score,
     }),
-  })
-  .then((res) => res.json())
-  .then(() => {
-    console.log(`SUCCESS: updated characters score`)
-    requestModuleInfo(thisApp);
-  })
-  .catch((error) => {
-    console.log("Failed to update char score", error);
   });
+  await response.json();
+  requestModuleInfo(thisApp);
 };
 
 const updateCharScore = async (user_uid, katakana_char, score) => {

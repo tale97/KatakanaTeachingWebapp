@@ -7,8 +7,6 @@ import "../scss/components/Char.scss";
 
 const mapStateToProps = (state) => {
   return {
-    // charTimestamp: state.changeCardState.charTimestamp,
-    // keyPressed: state.changeInputBox.keyPressed,
     indexCurrentCard: state.changeCardState.indexCurrentCard,
     cardStateList: state.changeCardState.cardStateList,
     onHintedCard: state.changeCardState.onHintedCard,
