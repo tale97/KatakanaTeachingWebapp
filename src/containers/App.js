@@ -25,6 +25,7 @@ import SmallCharList from "../components/SmallCharList";
 import KatakanaChart from "../components/KatakanaChart";
 import LoadingPopup from "../components/LoadingPopup"
 import LinearDeterminate from "../components/LinearDeterminate";
+import CircularIndeterminate from "../components/CircularIndeterminate";
 import "../scss/containers/App.scss";
 import { katakanaToRomaji } from "../jap-char";
 import {
@@ -35,6 +36,7 @@ import {
 } from "../actions";
 import {
   USER_TIME_LIMIT_IN_MINUTES,
+  GETCHARSCORE_URL,
 } from "../constants";
 import {
   listOfPraises,
@@ -106,6 +108,8 @@ class App extends Component {
       //   joined: "",
       // },
       requestedWord: `place_holder`,
+      charResultList: {},
+      isFetchingCharResult: false,
 
       currentWordInfo: null,
       openEndDialogue: false,
@@ -193,6 +197,25 @@ class App extends Component {
     this.moveToNextWord(this.state.requestedWord, this);
   };
 
+  requestGetCharScore = () => {
+    this.setState({ isFetchingCharResult: true });
+    fetch(GETCHARSCORE_URL, {
+      method: "post",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        user_uid: this.state.userInfo.id,
+      }),
+    })
+    .then((res) => res.json())
+    .then((charResultList) => {
+      this.setState({ isFetchingCharResult: false });
+      this.setState({ charResultList: charResultList });
+    })
+    .catch((err) => {
+      console.log("Error in getting characters' familiarity", err);
+    });
+  };
+
   focusInputBox = () => {
     this.charInputRef.current.formRef.current.focus();
   };
@@ -273,6 +296,9 @@ class App extends Component {
       wrongCharList,
       romajiList,
     } = this.props;
+    if (this.state.isFetchingCharResult) {
+      return <CircularIndeterminate isOpen={true}/>
+    }
     if (this.state.route === "progress") {
       return `
         You can click on each card to see how many times you've gotten a character correct (green) vs how many times you've used hint (yellow).
@@ -387,7 +413,10 @@ class App extends Component {
               />
             </div>
             <div className="progress-flex-item2">
-              <SmallCharList user_uid={this.state.userInfo.id} />
+              <SmallCharList 
+                requestGetCharScore={this.requestGetCharScore}
+                charResultList={this.state.charResultList}
+              />
             </div>
             <Footer />
           </div>
@@ -410,7 +439,10 @@ class App extends Component {
               />
             </div>
             <div className="progress-flex-item2">
-              <KatakanaChart user_uid={this.state.userInfo.id} />
+              <KatakanaChart 
+                requestGetCharScore={this.requestGetCharScore}
+                charResultList={this.state.charResultList}
+              />
             </div>
             <Footer />
           </div>

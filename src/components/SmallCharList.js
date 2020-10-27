@@ -11,30 +11,10 @@ import MessageBar from "../components/MessageBar";
 class SmallCharList extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      charResultList: {},
-    };
   }
 
-  requestGetCharScore = () => {
-    fetch(GETCHARSCORE_URL, {
-      method: "post",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        user_uid: this.props.user_uid,
-      }),
-    })
-      .then((res) => res.json())
-      .then((charResultList) => {
-        this.setState({ charResultList: charResultList });
-      })
-      .catch((err) => {
-        console.log("Error in getting characters' familiarity", err);
-      });
-  };
-
   componentDidMount = () => {
-    this.requestGetCharScore();
+    this.props.requestGetCharScore();
   };
 
   computeCorrectPercentage = (resultList) => {
@@ -89,8 +69,9 @@ class SmallCharList extends React.Component {
 
   render() {
     var charsArrayDisplay = null;
+    var charResultList = this.props.charResultList;
 
-    if (Object.keys(this.state.charResultList).length === 0) {
+    if (Object.keys(this.props.charResultList).length === 0) {
       // return <LoadingPopup isOpen={true} />;
       charsArrayDisplay = limitedKatakanaList.map((kana, idx) => {
           return (
@@ -108,22 +89,22 @@ class SmallCharList extends React.Component {
           ); 
       });
     } else {
-      console.log(`DEBUG 二 ${JSON.stringify(this.state.charResultList["二"])}`)
+      console.log(`DEBUG 二 ${JSON.stringify(charResultList["二"])}`)
       charsArrayDisplay = limitedKatakanaList.map((kana, idx) => {
         if (kana !== "clearBuffer") {
           var correctPercentage = 0;
           var hintedPercentage = 0;
           var correctNum = this.computeCorrectNum(
-            this.state.charResultList[kana]
+            charResultList[kana]
           );
           var incorrectNum = this.computeIncorrectNum(
-            this.state.charResultList[kana]
+            charResultList[kana]
           );
-          var hintedNum = this.state.charResultList[kana].length - correctNum - incorrectNum;
+          var hintedNum = charResultList[kana].length - correctNum - incorrectNum;
   
-          if (Object.keys(this.state.charResultList).length > 0) {
+          if (Object.keys(charResultList).length > 0) {
             correctPercentage = this.computeCorrectPercentage(
-              this.state.charResultList[kana]
+              charResultList[kana]
             );
             hintedPercentage = 100 - correctPercentage;
             if (correctPercentage === -1) {

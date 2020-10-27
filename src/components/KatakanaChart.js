@@ -9,38 +9,18 @@ import "../scss/components/KatakanaChar.scss";
 class KatakanaChart extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      charResultList: {},
-      isLoading: false,
-    };
   }
 
-  requestGetCharScore = () => {
-    fetch(GETCHARSCORE_URL, {
-      method: "post",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        user_uid: this.props.user_uid,
-      })
-    })
-      .then((res) => res.json())
-      .then((charResultList) => {
-        this.setState({ charResultList: charResultList });
-      })
-      .catch((err) => {
-        console.log("Error in fetching data about characters' familiarity", err)
-      });
-  };
-
   componentDidMount = () => {
-    this.requestGetCharScore();
+    this.props.requestGetCharScore();
   }
 
   render() {
     var katakanaArray = null;
     var kana_filteredResultList = null;
+    var charResultList = this.props.charResultList;
 
-    if (Object.keys(this.state.charResultList).length === 0) {
+    if (Object.keys(charResultList).length === 0) {
       // return <LoadingPopup isOpen={true} />
       // if haven't receive data
       katakanaArray = limitedKatakanaList.map((kana, idx) => {
@@ -56,9 +36,9 @@ class KatakanaChart extends React.Component {
         );
       });
     } else {
-      console.log(`DEBUG 二 ${JSON.stringify(this.state.charResultList["二"])}`)
+      console.log(`DEBUG 二 ${JSON.stringify(charResultList["二"])}`)
       katakanaArray = limitedKatakanaList.map((kana, idx) => {
-        kana_filteredResultList = this.state.charResultList[kana].filter(resultType => resultType !== "incorrect")
+        kana_filteredResultList = charResultList[kana].filter(resultType => resultType !== "incorrect")
         console.log(`${kana}: ${kana_filteredResultList}`);
         return (
           <Grid item key={idx}>

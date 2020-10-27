@@ -43,9 +43,9 @@ function SmallChar(props) {
       { isLoading ? (
         <Skeleton 
           variant="wave" 
-          width={75} 
-          height={80} 
-          style={{ borderRadius: "15px"}}
+          width={"calc(5vh + 28px)"} 
+          height={"calc(5vh + 35px)"} 
+          style={{ borderRadius: "calc(7px + 1vh)"}}
         />
       ) : (
         <div>
