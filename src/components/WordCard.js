@@ -23,16 +23,13 @@ export default function WordCard({ wordInfo }) {
   var el = document.createElement("html");
   el.innerHTML = "<b>bolded text</b>";
 
-  var katakana_word = null;
   var word_meaning = null;
   var word_pos = null;
 
   if (Object.keys(wordInfo).includes("word")) {
-    katakana_word = wordInfo.word;
     word_meaning = wordInfo.meaning;
     word_pos = wordInfo.part_of_speech;
   } else {
-    katakana_word = wordInfo.vocab_kana;
     word_meaning = wordInfo.vocab_meaning;
     word_pos = wordInfo.vocab_pos;
   }

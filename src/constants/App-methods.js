@@ -22,7 +22,39 @@ const parseJapaneseWord = (katakana_word) => {
   return charsToRead;
 };
 
-const updateCharScore = (user_uid, katakana_char, score) => {
+const updateScoreThenGetModule = async (thisApp, user_uid, katakana_char, score) => {
+  // const response = await fetch(UPDATECHARSCORE_URL, {
+  //   method: "post",
+  //   headers: { "Content-Type": "application/json" },
+  //   body: JSON.stringify({
+  //     user_uid: user_uid,
+  //     char: katakana_char,
+  //     score: score,
+  //   }),
+  // });
+  // await response.json();
+  // requestModuleInfo(thisApp);
+
+  fetch(UPDATECHARSCORE_URL, {
+    method: "post",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      user_uid: user_uid,
+      char: katakana_char,
+      score: score,
+    }),
+  })
+  .then((res) => res.json())
+  .then(() => {
+    console.log(`SUCCESS: updated characters score`)
+    requestModuleInfo(thisApp);
+  })
+  .catch((error) => {
+    console.log("Failed to update char score", error);
+  });
+};
+
+const updateCharScore = async (user_uid, katakana_char, score) => {
   fetch(UPDATECHARSCORE_URL, {
     method: "post",
     headers: { "Content-Type": "application/json" },
@@ -33,7 +65,9 @@ const updateCharScore = (user_uid, katakana_char, score) => {
     }),
   })
     .then((res) => res.json())
-    .then(() => {})
+    .then(() => {
+      console.log(`SUCCESS: updated characters score`)
+    })
     .catch((error) => {
       console.log("Failed to update char score", error);
     });
@@ -63,7 +97,7 @@ const parseAudio = (audio_string) => {
   return audio_string.slice(7, audio_string.length - 1);
 };
 
-const requestModuleInfo = (thisApp) => {
+const requestModuleInfo = async (thisApp) => {
   const version = VERSION === 2 ? "2" : "";
   fetch(GETMODULEINFO_URL, {
     method: "post",
@@ -76,6 +110,7 @@ const requestModuleInfo = (thisApp) => {
   .then((res) => res.json())
   .then((moduleInfoObject) => {
     thisApp.setState({ moduleInfo: moduleInfoObject });
+    console.log(`SUCCESS: fetched module`)
   })
   .catch((error) => {
     console.log(`Error in requestModuleInfo: ${error}`);
@@ -200,4 +235,5 @@ export {
   transitionToNextChar,
   moveToNextWord,
   requestNewWord,
+  updateScoreThenGetModule,
 };

@@ -147,15 +147,16 @@ class CharInput extends React.Component {
       setCurrentChar,
       onCompleteChar,
       getKeyByValue,
-      updateCharScore,
       user_uid,
       onHintedCard,
       onEnterPress,
+      updateScoreThenGetModule,
+      thisApp,
     } = this.props;
     const userInputChar = getKeyByValue(katakanaToRomaji, char);
 
     if (char === romajiList[indexCurrentCard] && !onHintedCard) {
-      updateCharScore(user_uid, userInputChar, "+1");
+      updateScoreThenGetModule(thisApp, user_uid, userInputChar, "+1")
       onCorrectChar();
       onCompleteChar(Date.now(), "correct");
       const newRomaji = romajiList[indexCurrentCard + 1];
@@ -164,8 +165,6 @@ class CharInput extends React.Component {
       if (indexCurrentCard === romajiList.length - 1) {
         onWordCompletion();
       }
-      console.log(`CORRECT!`)
-      this.props.requestModuleInfo(this.props.thisApp);
     } else if (char === romajiList[indexCurrentCard] && onHintedCard) {
       if (indexCurrentCard === romajiList.length - 1) {
         onWordCompletion();
@@ -181,9 +180,8 @@ class CharInput extends React.Component {
         katakanaToRomaji,
         romajiList[indexCurrentCard]
       );
-      updateCharScore(user_uid, userInputChar, "0");
-      updateCharScore(user_uid, currentChar, "0");
-      this.props.requestModuleInfo(this.props.thisApp);
+      updateScoreThenGetModule(thisApp, user_uid, userInputChar, "0")
+      updateScoreThenGetModule(thisApp, user_uid, currentChar, "0")
     }
   };
 
@@ -301,9 +299,10 @@ class CharInput extends React.Component {
       romajiList,
       indexCurrentCard,
       user_uid,
-      updateCharScore,
       getKeyByValue,
       disableAllAction,
+      updateScoreThenGetModule,
+      thisApp,
     } = this.props;
     
     if (disableAllAction) {
@@ -322,8 +321,7 @@ class CharInput extends React.Component {
         katakanaToRomaji,
         romajiList[indexCurrentCard]
       );
-      updateCharScore(user_uid, currentChar, "+0");
-      this.props.requestModuleInfo(this.props.thisApp);
+      updateScoreThenGetModule(thisApp, user_uid, currentChar, "+0")
       // clear current input
       this.clearCurrentInput(event);
     } else if (wordCompleted) {

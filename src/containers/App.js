@@ -7,7 +7,6 @@ import Hint from "../components/Hint";
 import { 
   Grid, 
   Paper,
-  Button,
   Switch,
   Box,
   FormControlLabel,
@@ -40,18 +39,14 @@ import {
 import {
   listOfPraises,
   listOfSoftPraises,
-  WALKTHROUGH_PART_1,
-  WALKTHROUGH_PART_2,
-  WALKTHROUGH_PART_3,
-  WALKTHROUGH_PART_4,
   Introduction,
 } from "../constants/App-constants";
 import {
   parseJapaneseWord,
-  updateCharScore,
   requestModuleInfo,
   moveToNextWord,
   requestNewWord,
+  updateScoreThenGetModule,
 } from "../constants/App-methods";
 import LogRocket from "logrocket";
 import 'intro.js/introjs.css';
@@ -117,28 +112,16 @@ class App extends Component {
       isFetchingWord: false,
       checkedAudioAutoPlay: false,
       checkedEnableMessage: true,
-      checkedEnableBlueButton: false,
       walkThroughEnabled: false,
 
       // introjs test
       initialStep: 0,
-      steps1Enabled: false,
-      steps2Enabled: false,
-      steps3Enabled: false,
-      steps4Enabled: false,
-      transitionedFromSteps1ToSteps2: false,
-      transitionedFromSteps2ToSteps3: false,
-      transitionedFromSteps3ToSteps5: false,
-      steps1: WALKTHROUGH_PART_1,
-      steps2: WALKTHROUGH_PART_2,
-      steps3: WALKTHROUGH_PART_3,
-      steps4: WALKTHROUGH_PART_4,
       introductory_steps: Introduction,
       disableAllAction: false,
       firstTimeCompleteWordSinceWalkThru: false,
       firstIntroductionEnabled: false,
-      
       moduleInfo: null,
+      randomIndex: 0,
     };
     this.charInputRef = React.createRef();
     this.hintCardRef = React.createRef();
@@ -156,10 +139,6 @@ class App extends Component {
     if (this.state.route === "home"
         && prevState.route === "register") {
       this.setState({ walkThroughEnabled: false }) // TODO should be true, if want to enable by default when login first time
-      this.setState({ steps1Enabled: true });
-      this.setState({ steps2Enabled: false });
-      this.setState({ steps3Enabled: false });
-      this.setState({ steps4Enabled: false });
       this.setState({ firstIntroductionEnabled: true });
       this.requestModuleInfo(this);
     } 
@@ -177,35 +156,8 @@ class App extends Component {
         this.setState({ openEndDialogue: true });
       }, USER_TIME_LIMIT_IN_MINUTES * 60000);
     }
-    if (this.state.steps1Enabled === prevState.steps1Enabled
-        && !this.state.transitionedFromSteps1ToSteps2) {
-      if (this.hintCardRef.current !== null) {
-        this.setState({ steps1Enabled: false })
-        this.setState({ steps2Enabled: true })
-        this.setState({ transitionedFromSteps1ToSteps2: true })
-      }
-    }
-    if (this.state.steps2Enabled === prevState.steps2Enabled
-        && !this.state.transitionedFromSteps2ToSteps3
-        && this.state.transitionedFromSteps1ToSteps2) {
-      if (this.hintCardRef.current === null) {
-        this.setState({ steps2Enabled: false })
-        this.setState({ steps3Enabled: true })
-        this.setState({ transitionedFromSteps2ToSteps3: true })
-      }
-    }
-    if (this.state.steps3Enabled === prevState.steps3Enabled
-        && !this.state.transitionedFromSteps3ToSteps4
-        && this.state.transitionedFromSteps1ToSteps2
-        && this.state.transitionedFromSteps2ToSteps3
-        && this.state.firstTimeCompleteWordSinceWalkThru
-        ) {
-      if (this.wordCardRef.current === null) {
-        this.setState({ steps3Enabled: false })
-        this.setState({ steps4Enabled: true })
-        this.setState({ transitionedFromSteps3ToSteps4: true })
-        this.setState({ firstTimeCompleteWordSinceWalkThru: false }) // for future walkthru
-      }
+    if (this.state.requestedWord !== prevState.requestedWord) {
+      this.setState({ randomIndex: Math.floor(Math.random() * 8) })
     }
   };
 
@@ -231,10 +183,10 @@ class App extends Component {
   onRouteChange = (route) => {
     this.setState({ route: route });
   };
-  updateCharScore = updateCharScore;
   requestModuleInfo = requestModuleInfo;
   requestNewWord = requestNewWord;
   moveToNextWord = moveToNextWord;
+  updateScoreThenGetModule = updateScoreThenGetModule;
 
   requestAndUpdateWord = async () => {
     await this.requestNewWord(this);
@@ -321,6 +273,16 @@ class App extends Component {
       wrongCharList,
       romajiList,
     } = this.props;
+    if (this.state.route === "progress") {
+      return `
+        You can click on each card to see how many times you've gotten a character correct (green) vs how many times you've used hint (yellow).
+      `;
+    }
+    if (this.state.route === "katakanaChart") {
+      return `
+        Hover over each card to see its pronunciation! Characters you've gotten correct are highlighted in color.
+      `;
+    }
     if (this.state.walkThroughEnabled) {
       return "..."
     }
@@ -339,11 +301,11 @@ class App extends Component {
     } else if (indexCurrentCard > 0 
       && indexCurrentCard < cardStateList.length
       && cardStateList[indexCurrentCard - 1] === "correct") {
-        return this.randomItem(listOfSoftPraises);
+        return listOfSoftPraises[0];
     } else if (wordCompleted && !audioIsPlaying) {
       const cardStateSet = new Set(cardStateList);
       if (cardStateSet.size === 1 && cardStateSet.has("correct")) {
-        return `${this.randomItem(listOfPraises)} Press spacebar to continue.`;
+        return `${listOfPraises[0]} Press spacebar to continue.`;
       } else {
         return `Click on ${this.props.version === 1 ? 'a' : 'the'} character or press spacebar to continue.`;
       }
@@ -389,115 +351,18 @@ class App extends Component {
       { checkedEnableMessage: !this.state.checkedEnableMessage }
     );
   }
-  handleEnableBlueButtonSwitch = () => {
-    this.setState(
-      {checkedEnableBlueButton: !this.state.checkedEnableBlueButton }
-    )
-  }
 
   onExitIntroduction = () => {
     this.setState({ firstIntroductionEnabled: false });
   }
-  onExitIntro1 = () => {
-    this.setState({ steps1Enabled: false });
-    this.setState({ disableAllAction: false });
-    this.setState({ checkedEnableMessage: true });
-  }
-  onExitIntro2 = () => {
-    this.setState({ steps2Enabled: false });
-    this.setState({ disableAllAction: false });
-  }
-  onExitIntro3 = () => {
-    this.setState({ steps3Enabled: false });
-    this.setState({ disableAllAction: false });
-  }
-  onExitIntro4 = () => {
-    this.setState({ steps4Enabled: false });
-    this.setState({ disableAllAction: false });
-    this.setState({ walkThroughEnabled: false });
-  }
-  
-  handleClickWalkthrough = () => {
-    // this.clickChild(this.charInputRef.current.formRef.current);
-    this.clearFormInput(this.charInputRef.current.formRef.current);
-    this.setState({ steps1Enabled: true });
-    this.setState({ steps2Enabled: false });
-    this.setState({ steps3Enabled: false });
-    this.setState({ steps4Enabled: false });
-    this.setState({ transitionedFromSteps1ToSteps2: false });
-    this.setState({ transitionedFromSteps2ToSteps3: false });
-    this.setState({ transitionedFromSteps3ToSteps4: false });
-    this.setState({ walkThroughEnabled: true });
-    this.setState({ checkedEnableBlueButton: true });
-    this.setState({ firstIntroductionEnabled: false });
-    this.props.resetStore();
-    this.requestAndUpdateWord();
-  }
 
   endWalkThrough = () => {
     this.clearFormInput(this.charInputRef.current.formRef.current);
-    this.setState({ steps1Enabled: false });
-    this.setState({ steps2Enabled: false });
-    this.setState({ steps3Enabled: false });
-    this.setState({ steps4Enabled: false });
-    this.setState({ transitionedFromSteps1ToSteps2: false });
-    this.setState({ transitionedFromSteps2ToSteps3: false });
-    this.setState({ transitionedFromSteps3ToSteps4: false });
     this.setState({ walkThroughEnabled: false });
-    this.setState({ checkedEnableBlueButton: true });
     this.props.resetStore();
     this.requestAndUpdateWord();
   }
 
-  onBeforeChange1 = (nextStepIndex) => {
-    if (nextStepIndex) {
-      // select dynamically created elements
-      this.steps1.updateStepElement(nextStepIndex);
-    }
-    if (nextStepIndex === 4) {
-      if (!this.hintCardRef.current) {
-        return false;
-      } else {
-        this.steps1.updateStepElement(nextStepIndex);
-      }
-    }
-  }
-  onBeforeChange2 = (nextStepIndex) => {
-    if (nextStepIndex) {
-      this.steps2.updateStepElement(nextStepIndex);
-    }
-    if (nextStepIndex === 3) {
-      if (this.hintCardRef.current !== null) {
-        return false;
-      } else {
-        this.steps2.updateStepElement(nextStepIndex);
-      }
-    }
-  }
-  onBeforeChange3 = (nextStepIndex) => {
-    if (nextStepIndex) {
-      this.steps3.updateStepElement(nextStepIndex);
-    }
-    if (nextStepIndex === 3) {
-      if (this.wordCardRef.current !== null) {
-        return false;
-      } else {
-        this.steps3.updateStepElement(nextStepIndex);
-      }
-    }
-  }
-  onBeforeChange4 = (nextStepIndex) => {
-    if (nextStepIndex) {
-      this.steps4.updateStepElement(nextStepIndex);
-    }
-  }
-  onChangeInSteps = (specialIndex) => (index, _) => {
-    if (index !== specialIndex) {
-      this.setState({ disableAllAction: true });
-    } else {
-      this.setState({ disableAllAction: false });
-    }
-  }
   firstTimeCompleteWordSinceWalkThrough = () => {
     this.setState({ firstTimeCompleteWordSinceWalkThru : true })
   }
@@ -513,6 +378,14 @@ class App extends Component {
                 currentTab="progress"
               />
             </div>
+            <div>
+              <MessageBar 
+                className={`message-box`}
+                userName={"friend."}
+                message={this.displayMessage()}
+                displayHelpMessages={true}
+              />
+            </div>
             <div className="progress-flex-item2">
               <SmallCharList user_uid={this.state.userInfo.id} />
             </div>
@@ -526,6 +399,14 @@ class App extends Component {
               <NavBar
                 onRouteChange={this.onRouteChange}
                 currentTab="katakanaChart"
+              />
+            </div>
+            <div>
+              <MessageBar 
+                className={`message-box`}
+                userName={"friend."}
+                message={this.displayMessage()}
+                displayHelpMessages={true}  
               />
             </div>
             <div className="progress-flex-item2">
@@ -547,17 +428,7 @@ class App extends Component {
         );
       case "home":
         const { currentWord } = this.props;
-        const {
-          steps1Enabled,
-          steps2Enabled,
-          steps3Enabled,
-          steps4Enabled,
-          steps1,
-          steps2,
-          steps3,
-          steps4,
-          initialStep
-        } = this.state;
+        const { initialStep } = this.state;
         const generalStepsOptions = {
           showStepNumbers: false,
           hidePrev: true,
@@ -567,14 +438,7 @@ class App extends Component {
           showButtons: true,
           overlayOpacity: 0.5,
           skipLabel: "Skip",
-          doneLabel: "Got it!",
-        };
-        const lastStepsOptions = {
-          showStepNumbers: false,
-          hidePrev: true,
-          hideNext: true,
-          showButtons: false,
-          overlayOpacity: 0.2,
+          doneLabel: "Start Learning",
         };
         return (
           <div className="page-container" style={{ position: "relative" }}>
@@ -586,48 +450,8 @@ class App extends Component {
               onExit={this.onExitIntroduction}
               options={generalStepsOptions}
               ref={steps => (this.introductory_steps = steps)}
-              // onBeforeChange={this.onBeforeChange1}
             >
             </Steps>
-            <Steps
-              enabled={steps1Enabled && this.state.walkThroughEnabled}
-              steps={steps1}
-              initialStep={initialStep}
-              onExit={this.onExitIntroduction}
-              options={generalStepsOptions}
-              ref={steps => (this.steps1 = steps)}
-              onBeforeChange={this.onBeforeChange1}
-              onChange={this.onChangeInSteps(2)}
-            />
-            <Steps
-              enabled={steps2Enabled && this.state.walkThroughEnabled}
-              steps={steps2}
-              initialStep={initialStep}
-              onExit={this.onExitIntro2}
-              options={generalStepsOptions}
-              ref={steps => (this.steps2 = steps)}
-              onBeforeChange={this.onBeforeChange2}
-              onChange={this.onChangeInSteps(1)}
-            />
-            <Steps
-              enabled={steps3Enabled && this.state.walkThroughEnabled}
-              steps={steps3}
-              initialStep={initialStep}
-              onExit={this.onExitIntro3}
-              options={generalStepsOptions}
-              ref={steps => (this.steps3 = steps)}
-              onBeforeChange={this.onBeforeChange3}
-              onChange={this.onChangeInSteps(2)}
-            />
-            <Steps
-              enabled={steps4Enabled && this.state.walkThroughEnabled}
-              steps={steps4}
-              initialStep={initialStep}
-              onExit={this.onExitIntro4}
-              options={generalStepsOptions}
-              ref={steps => (this.steps4 = steps)}
-              onBeforeChange={this.onBeforeChange4}
-            />
             <Dialog
               open={this.state.openEndDialogue}
               aria-labelledby="alert-dialog-title"
@@ -656,7 +480,6 @@ class App extends Component {
               <NavBar 
                 onRouteChange={this.onRouteChange} 
                 currentTab="home"
-                handleClickWalkthrough={this.handleClickWalkthrough}
               />
               <div className="message-bar">
                 <MessageBar 
@@ -694,20 +517,6 @@ class App extends Component {
                 }
               >
               </FormControlLabel>
-              {/* <FormControlLabel
-                className="blue-button-visibility-control switch-control"
-                label="Display Button"
-                labelPlacement="start"
-                control={
-                  <Switch 
-                    checked={this.state.checkedEnableBlueButton}
-                    onChange={this.handleEnableBlueButtonSwitch}
-                    name="enable-bluebutton" 
-                    color="primary"
-                  />
-                }
-              >
-              </FormControlLabel> */}
               <Grid
                 container
                 direction="column"
@@ -720,7 +529,6 @@ class App extends Component {
                     <Grid item className="inputbox-div">
                       <OutsideAlerter focusInputBox={this.focusInputBox}>
                         <CharInput
-                          updateCharScore={this.updateCharScore}
                           getKeyByValue={this.getKeyByValue}
                           user_uid={this.state.userInfo.id}
                           ref={this.charInputRef}
@@ -734,6 +542,7 @@ class App extends Component {
                           firstTimeCompleteWordSinceWalkThrough = 
                           {this.firstTimeCompleteWordSinceWalkThrough}
                           requestModuleInfo={this.requestModuleInfo}
+                          updateScoreThenGetModule={this.updateScoreThenGetModule}
                           thisApp={this}
                         />
                       </OutsideAlerter>
@@ -751,7 +560,6 @@ class App extends Component {
                     <Grid item>
                       <Box
                         className="progress-bar"
-                        // width="30vw" 
                       >
                         <LinearDeterminate 
                           moduleInfo={this.state.moduleInfo} 
@@ -759,36 +567,6 @@ class App extends Component {
                       </Box>
                     </Grid>
                   </div>
-                  {this.state.checkedEnableBlueButton ? (<Grid item > 
-                    {!this.props.audioIsPlaying ? (
-                      <Button
-                        className="main-button"
-                        size="large"
-                        variant="contained"
-                        color="primary"
-                        onClick={() => this.clickChild(this.charInputRef.current.formRef.current)}
-                        style={{ color: "white" }}
-                      >
-                        {this.setButtonText()}
-                      </Button>
-                    ) : (
-                      <Button
-                        className="main-button"
-                        disabled                       
-                        size="large"
-                        variant="contained"
-                        color="primary"
-                        onClick={() =>
-                          this.clickChild(
-                            this.charInputRef.current.formRef.current
-                          )
-                        }
-                        style={{ color: "white" }}
-                      >
-                        {"Got it"}
-                      </Button>
-                    )}
-                  </Grid>) : null}
                   <Grid item className="card-area">
                     <Grid
                       container

@@ -5,6 +5,8 @@ import { katakanaToRomaji, limitedKatakanaList } from "../jap-char";
 import { GETCHARSCORE_URL } from "../constants";
 import "../scss/components/SmallChar.scss";
 import LoadingPopup from "./LoadingPopup";
+import MessageBar from "../components/MessageBar";
+
 
 class SmallCharList extends React.Component {
   constructor(props) {
