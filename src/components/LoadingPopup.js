@@ -17,7 +17,7 @@ const LoadingPopup = (props) => {
             <CircularProgress /> 
           </div>
           <div className="loading-text">
-            {"Loading"}
+            {"Please wait a bit, our server is waking up..."}
           </div>
           
         </DialogContent>

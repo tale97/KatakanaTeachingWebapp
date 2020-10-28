@@ -94,13 +94,19 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      route: "register", // should be register
+      route: "home", // should be register
       userInfo: {
-        id: "",
-        name: "",
-        email: "",
-        joined: "",
+        email: "developer@g.com",
+        joined: "2020-10-26T14:19:40.915Z",
+        name: "Developer",
+        id: "5ab535f5-b0eb-4a9b-98b5-b6b86cd8d328",
       },
+      // userInfo: {
+      //   id: "",
+      //   name: "",
+      //   email: "",
+      //   joined: "",
+      // },
       requestedWord: null,
       charResultList: {},
       isFetchingCharResult: false,
@@ -294,9 +300,14 @@ class App extends Component {
       indexCurrentCard,
       wrongCharList,
       romajiList,
+      currentWord,
     } = this.props;
-    if (this.state.isFetchingCharResult || !this.state.requestedWord) {
+    if (this.state.isFetchingCharResult
+        || !this.state.requestedWord
+        && !parseJapaneseWord(currentWord).length <= 0) {
       return <CircularIndeterminate isOpen={true}/>
+    } else if (parseJapaneseWord(currentWord).length <= 0) {
+      return <LoadingPopup isOpen={true}/>
     }
     if (this.state.route === "progress") {
       return `
@@ -393,7 +404,6 @@ class App extends Component {
   }
   
   renderRoute = (route) => {
-    console.log(`DEBUG ${this.state.requestedWord}`)
     switch (route) {
       case "progress":
         return (

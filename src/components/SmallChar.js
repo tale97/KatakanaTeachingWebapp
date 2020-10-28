@@ -54,7 +54,11 @@ function SmallChar(props) {
           variant="wave" 
           width={"calc(5vh + 28px)"} 
           height={"calc(5vh + 35px)"} 
-          style={{ borderRadius: "calc(7px + 1vh)"}}
+          style={{ 
+            borderRadius: "calc(7px + 1vh)",
+            maxWidth: "75px",
+            maxHeight: "80px",
+          }}
         />
       ) : (
         <div>

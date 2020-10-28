@@ -117,8 +117,12 @@ class CharList extends React.Component {
             className="word-skeleton"
             height={"calc(50px + 4vh)"}
             width={"calc(170px + 15vh + 2vh)"}
+            variant="text"
+            animation="wave"
+            style={{ 
+              borderRadius: "calc(0px + 0.7vh)",
+            }}
           />
-
         </Grid>
       )
     );
