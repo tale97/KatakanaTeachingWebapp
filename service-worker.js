@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/KatakanaTeachingWebapp/precache-manifest.333c20489b4bf420b8372462acebceac.js"
+  "/KatakanaTeachingWebapp/precache-manifest.fee07814ff9f93587d8a5b87b35f8f52.js"
 );
 
 self.addEventListener('message', (event) => {
