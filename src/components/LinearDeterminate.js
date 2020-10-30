@@ -22,7 +22,6 @@ export default function LinearDeterminate(props) {
     totalRepetition = moduleInfo.totalRepetition/2; // could use 1
     totalRemainingRepetition = moduleInfo.totalRemainingRepetition;
   }
-  
   const progressPercent = calculateProgress(totalRepetition, totalRemainingRepetition);
 
   return (

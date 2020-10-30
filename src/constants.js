@@ -7,7 +7,7 @@ var VERSION = 1; // 1 for word-base ver, 2 for char-base ver
 
 var PRIMARYCOLOR = "#1cb0f6";
 
-var USER_TIME_LIMIT_IN_MINUTES = 30;
+var USER_TIME_LIMIT_IN_MINUTES = 20;
 var REGISTER_URL = "https://localhost:3000/register";
 var SIGNIN_URL = "https://localhost:3000/signin";
 var PROFILE_URL = "https://localhost:3000/profile/";

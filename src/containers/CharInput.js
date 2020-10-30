@@ -155,7 +155,7 @@ class CharInput extends React.Component {
     } = this.props;
     const userInputChar = getKeyByValue(katakanaToRomaji, char);
 
-    if (char === romajiList[indexCurrentCard] && !onHintedCard) {
+    if (char === romajiList[indexCurrentCard] && !onHintedCard) {  
       updateScoreThenGetModule(thisApp, user_uid, userInputChar, "+1")
       onCorrectChar();
       onCompleteChar(Date.now(), "correct");

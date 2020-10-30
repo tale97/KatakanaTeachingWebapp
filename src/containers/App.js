@@ -331,7 +331,7 @@ class App extends Component {
         : `${curWrongChar} corresponds to ${this.getKeyByValue(katakanaToRomaji, curWrongChar)}, not ${currentJapChar}. Delete your input and try again.`
       );
     } else if (onHintedCard) {
-      return "Type the character."
+      return "Type the character. You can also click on the card for audio."
     } else if (romajiList[indexCurrentCard] in wrongCharList) {
       return "Press spacebar if you're stuck."
     } else if (indexCurrentCard > 0 
