@@ -505,9 +505,9 @@ class App extends Component {
               <DialogContent>
                 <DialogContentText id="alert-dialog-description">
                   <p>
-                    {`You have used the app for ${USER_TIME_LIMIT_IN_MINUTES} minute. Please click the link
+                    {`You have used the app for ${USER_TIME_LIMIT_IN_MINUTES} minutes. Please click the link
                     below to take a short test that will assess your Katakana
-                    knowledge. Thank you for using the app!`}
+                    knowledge. Thank you so much for using the app!`}
                   </p>
                   <a
                     href="https://harvard.az1.qualtrics.com/jfe/form/SV_2aZI7SwLfhp5nxj"
