@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "77bc3a1178be626feb7f3ecb25c3cb8d",
+    "revision": "501a2b926ffb6bf6a78ce6bc450ca47d",
     "url": "/KatakanaTeachingWebapp/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/KatakanaTeachingWebapp/static/css/2.76c8123f.chunk.css"
   },
   {
-    "revision": "0977fc8b8e65e18d0aa7",
+    "revision": "c6551b037e63a049072d",
     "url": "/KatakanaTeachingWebapp/static/css/main.09aaea08.chunk.css"
   },
   {
@@ -20,8 +20,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/KatakanaTeachingWebapp/static/js/2.05f28c47.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "0977fc8b8e65e18d0aa7",
-    "url": "/KatakanaTeachingWebapp/static/js/main.4fe37e4f.chunk.js"
+    "revision": "c6551b037e63a049072d",
+    "url": "/KatakanaTeachingWebapp/static/js/main.39ffaa1f.chunk.js"
   },
   {
     "revision": "9d9bb29a8805ab228643",
