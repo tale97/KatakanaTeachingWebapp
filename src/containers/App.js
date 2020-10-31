@@ -507,7 +507,7 @@ class App extends Component {
                   <p>
                     {`You have used the app for ${USER_TIME_LIMIT_IN_MINUTES} minutes. Please click the link
                     below to take a short test that will assess your Katakana
-                    knowledge. Thank you so much for using the app!`}
+                    knowledge. Thank you so much for using the app, ${this.state.userInfo.name}! If you want you can add me on Facebook (Le Trung Tuan Anh) and give me feedback on the app. I would love to hear from you!`}
                   </p>
                   <a
                     href="https://harvard.az1.qualtrics.com/jfe/form/SV_2aZI7SwLfhp5nxj"
