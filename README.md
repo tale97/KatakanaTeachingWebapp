@@ -22,8 +22,10 @@ Click [here](https://youtu.be/wIK9oneUrDg) to watch a video demo
    - Javascript
    - NodeJS
    - ExpressJS
+   
 - Database
    - PostgreSQL
+   
 - Service
   - Heroku
   - GitHub
