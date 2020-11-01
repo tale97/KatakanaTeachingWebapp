@@ -25,7 +25,8 @@ Click [here](https://youtu.be/wIK9oneUrDg) to watch a video demo
 - Database
    - PostgreSQL
 - Service
-  - Heroku, GitHub
+  - Heroku
+ - GitHub
 
 ## Setup
 ### `npm install`
