@@ -18,17 +18,15 @@ Click [here](https://youtu.be/wIK9oneUrDg) to watch a video demo
   * Redux
   * Javascript
   * SASS
-- Backend
-   - Javascript
-   - NodeJS
-   - ExpressJS
-   
-- Database
-   - PostgreSQL
-   
-- Service
-  - Heroku
-  - GitHub
+* Backend
+  * Javascript
+  * NodeJS
+  * ExpressJS  
+* Database
+  * PostgreSQL
+* Service
+  * Heroku
+  * GitHub
 
 ## Setup
 ### `npm install`
