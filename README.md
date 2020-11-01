@@ -1,4 +1,4 @@
-# Katakana Teaching Web Application
+# [Katakana Teaching Web Application](https://tale97.github.io/KatakanaTeachingWebapp/)
 
 ## Description
 
@@ -12,19 +12,19 @@ Click [here](https://youtu.be/wIK9oneUrDg) to watch a video demo.
 Here's the [link to actual website](https://tale97.github.io/KatakanaTeachingWebapp/) so you can register and use the app yourself!
 
 ## Technologies used
-* Frontend
+* **Frontend**
   * React
   * HTML & CSS
   * Redux
   * Javascript
   * SASS
-* Backend
+* **Backend**
   * Javascript
   * NodeJS
   * ExpressJS  
-* Database
+* **Database**
   * PostgreSQL
-* Service
+* **Service**
   * Heroku
   * GitHub
 
