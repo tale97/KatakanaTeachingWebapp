@@ -41,7 +41,8 @@ Here's the [link to actual website](https://tale97.github.io/KatakanaTeachingWeb
 This is a project that I have been working on for the past couple months. The original reason I wanted to work on this project was to help my friend with her senior thesis. She needed to develop a tool to teach people Katakana in a unique way. I wanted to learn more about web development so I undertake this project and learn various new technologies such as React/Redux, PostgreSQL, Javascript, which I have never touched before. I have learn a lot from working on this project and it got me very excited about web development in general. I hope to further hone my skill as a web developer.
 
 ## Setup
-
 ### `npm install`
-
 ### `npm start`
+
+## Please Connect
+Please do feel free to connect with me and give me feedback on this webapp! I would love to hear criticisms so I can further improve the app. If you have any suggestion for a feature, also just let me know! I love adding new features :smile:
