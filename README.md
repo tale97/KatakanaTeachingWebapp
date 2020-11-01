@@ -10,14 +10,14 @@ You will be typing out Japanese English-derived words and use mnemonics to memor
 Click [here](https://youtu.be/wIK9oneUrDg) to watch a video demo.  
 Here's the [link to actual website](https://tale97.github.io/KatakanaTeachingWebapp/) so you can register and use the app yourself!
 
-Home page:
-![Home Page](https://github.com/tale97/KatakanaTeachingWebapp/images/homepage.png?raw=true)
+**Home page**  
+![Home Page](./images/homepage.PNG?raw=true)
 
-Progress Page:
-![Progress Page](https://github.com/tale97/KatakanaTeachingWebapp/images/progress.png?raw=true)
+**Progress Page**  
+![Progress Page](./images/progress.PNG?raw=true)
 
-Learn by typing out words:
-![Example Usage](https://github.com/tale97/KatakanaTeachingWebapp/images/Learn.png?raw=true)
+**Learn by typing out words and viewing mnemonics cards**  
+![Example Usage](./images/Learn.PNG?raw=true)
 
 ## Technologies used
 
