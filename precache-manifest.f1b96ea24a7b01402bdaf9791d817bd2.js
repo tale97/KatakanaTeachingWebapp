@@ -1,27 +1,27 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "fba330f6c747403d58229baeb6f601bb",
+    "revision": "417b7c6dad9473f6582335a70cbdcb8b",
     "url": "/KatakanaTeachingWebapp/index.html"
   },
   {
-    "revision": "d01585ab1b2705d1e022",
+    "revision": "1d3b4bf70f7dbc38f394",
     "url": "/KatakanaTeachingWebapp/static/css/2.76c8123f.chunk.css"
   },
   {
-    "revision": "d1fba2f498de31b269b4",
+    "revision": "2405edb9fadf59951615",
     "url": "/KatakanaTeachingWebapp/static/css/main.a83fd9d7.chunk.css"
   },
   {
-    "revision": "d01585ab1b2705d1e022",
-    "url": "/KatakanaTeachingWebapp/static/js/2.05f28c47.chunk.js"
+    "revision": "1d3b4bf70f7dbc38f394",
+    "url": "/KatakanaTeachingWebapp/static/js/2.27b2128e.chunk.js"
   },
   {
     "revision": "5c742bbf6bd377cc3b7aefe902edd1ab",
-    "url": "/KatakanaTeachingWebapp/static/js/2.05f28c47.chunk.js.LICENSE.txt"
+    "url": "/KatakanaTeachingWebapp/static/js/2.27b2128e.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "d1fba2f498de31b269b4",
-    "url": "/KatakanaTeachingWebapp/static/js/main.39ffaa1f.chunk.js"
+    "revision": "2405edb9fadf59951615",
+    "url": "/KatakanaTeachingWebapp/static/js/main.14df74cd.chunk.js"
   },
   {
     "revision": "9d9bb29a8805ab228643",

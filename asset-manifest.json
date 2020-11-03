@@ -1,26 +1,26 @@
 {
   "files": {
     "main.css": "/KatakanaTeachingWebapp/static/css/main.a83fd9d7.chunk.css",
-    "main.js": "/KatakanaTeachingWebapp/static/js/main.39ffaa1f.chunk.js",
-    "main.js.map": "/KatakanaTeachingWebapp/static/js/main.39ffaa1f.chunk.js.map",
+    "main.js": "/KatakanaTeachingWebapp/static/js/main.14df74cd.chunk.js",
+    "main.js.map": "/KatakanaTeachingWebapp/static/js/main.14df74cd.chunk.js.map",
     "runtime-main.js": "/KatakanaTeachingWebapp/static/js/runtime-main.7022d8ce.js",
     "runtime-main.js.map": "/KatakanaTeachingWebapp/static/js/runtime-main.7022d8ce.js.map",
     "static/css/2.76c8123f.chunk.css": "/KatakanaTeachingWebapp/static/css/2.76c8123f.chunk.css",
-    "static/js/2.05f28c47.chunk.js": "/KatakanaTeachingWebapp/static/js/2.05f28c47.chunk.js",
-    "static/js/2.05f28c47.chunk.js.map": "/KatakanaTeachingWebapp/static/js/2.05f28c47.chunk.js.map",
+    "static/js/2.27b2128e.chunk.js": "/KatakanaTeachingWebapp/static/js/2.27b2128e.chunk.js",
+    "static/js/2.27b2128e.chunk.js.map": "/KatakanaTeachingWebapp/static/js/2.27b2128e.chunk.js.map",
     "index.html": "/KatakanaTeachingWebapp/index.html",
-    "precache-manifest.5c9b03b131c5f3266edf230c057907ce.js": "/KatakanaTeachingWebapp/precache-manifest.5c9b03b131c5f3266edf230c057907ce.js",
+    "precache-manifest.f1b96ea24a7b01402bdaf9791d817bd2.js": "/KatakanaTeachingWebapp/precache-manifest.f1b96ea24a7b01402bdaf9791d817bd2.js",
     "service-worker.js": "/KatakanaTeachingWebapp/service-worker.js",
     "static/css/2.76c8123f.chunk.css.map": "/KatakanaTeachingWebapp/static/css/2.76c8123f.chunk.css.map",
     "static/css/main.a83fd9d7.chunk.css.map": "/KatakanaTeachingWebapp/static/css/main.a83fd9d7.chunk.css.map",
-    "static/js/2.05f28c47.chunk.js.LICENSE.txt": "/KatakanaTeachingWebapp/static/js/2.05f28c47.chunk.js.LICENSE.txt",
+    "static/js/2.27b2128e.chunk.js.LICENSE.txt": "/KatakanaTeachingWebapp/static/js/2.27b2128e.chunk.js.LICENSE.txt",
     "static/media/index.css": "/KatakanaTeachingWebapp/static/media/roboto-latin-900italic.ebf6d164.woff2"
   },
   "entrypoints": [
     "static/js/runtime-main.7022d8ce.js",
     "static/css/2.76c8123f.chunk.css",
-    "static/js/2.05f28c47.chunk.js",
+    "static/js/2.27b2128e.chunk.js",
     "static/css/main.a83fd9d7.chunk.css",
-    "static/js/main.39ffaa1f.chunk.js"
+    "static/js/main.14df74cd.chunk.js"
   ]
 }
