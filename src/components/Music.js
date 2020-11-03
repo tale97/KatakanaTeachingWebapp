@@ -1,11 +1,8 @@
 // Taken from this https://stackoverflow.com/questions/47686345/playing-sound-in-reactjs
 import React from "react";
 import { connect } from "react-redux";
-import Button from "@material-ui/core/Button";
 import { onAudioPlay, onAudioPause } from "../actions";
 import "../scss/components/Music.scss";
-import PlayArrowIcon from '@material-ui/icons/PlayArrow';
-import PauseIcon from '@material-ui/icons/Pause';
 
 const mapStateToProps = (state) => {
   return {
@@ -54,17 +51,17 @@ class Music extends React.Component {
   }
 
   componentDidUpdate = (prevProps) => {
-    // if (prevProps.audioLink !== this.props.audioLink) {
-    //   var newAudio = new Audio(this.props.audioLink);
-    //   newAudio.addEventListener("ended", this.stopAudioHandler);
-    //   this.setState({ audio: newAudio });
-    //   if (this.props.autoplay) {
-    //     setTimeout(() => {
-    //       this.state.audio.play();
-    //       this.props.onAudioPlay();
-    //     }, this.props.delay);
-    //   }
-    // }
+    if (prevProps.audioLink !== this.props.audioLink) {
+      var newAudio = new Audio(this.props.audioLink);
+      newAudio.addEventListener("ended", this.stopAudioHandler);
+      this.setState({ audio: newAudio });
+      if (this.props.autoplay) {
+        setTimeout(() => {
+          this.state.audio.play();
+          this.props.onAudioPlay();
+        }, this.props.delay);
+      }
+    }
   };
 
   componentWillUnmount() {

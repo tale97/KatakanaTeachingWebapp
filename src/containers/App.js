@@ -333,7 +333,7 @@ class App extends Component {
     } else if (onHintedCard) {
       return "Type the character. You can also click on the card for audio."
     } else if (romajiList[indexCurrentCard] in wrongCharList) {
-      return "Press spacebar if you're stuck."
+      return "Type the character if you know it, or press spacebar if you're stuck."
     } else if (indexCurrentCard > 0 
       && indexCurrentCard < cardStateList.length
       && cardStateList[indexCurrentCard - 1] === "correct") {
