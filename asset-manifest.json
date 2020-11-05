@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/KatakanaTeachingWebapp/static/css/main.a83fd9d7.chunk.css",
-    "main.js": "/KatakanaTeachingWebapp/static/js/main.14df74cd.chunk.js",
-    "main.js.map": "/KatakanaTeachingWebapp/static/js/main.14df74cd.chunk.js.map",
+    "main.js": "/KatakanaTeachingWebapp/static/js/main.d83432c4.chunk.js",
+    "main.js.map": "/KatakanaTeachingWebapp/static/js/main.d83432c4.chunk.js.map",
     "runtime-main.js": "/KatakanaTeachingWebapp/static/js/runtime-main.7022d8ce.js",
     "runtime-main.js.map": "/KatakanaTeachingWebapp/static/js/runtime-main.7022d8ce.js.map",
     "static/css/2.76c8123f.chunk.css": "/KatakanaTeachingWebapp/static/css/2.76c8123f.chunk.css",
     "static/js/2.27b2128e.chunk.js": "/KatakanaTeachingWebapp/static/js/2.27b2128e.chunk.js",
     "static/js/2.27b2128e.chunk.js.map": "/KatakanaTeachingWebapp/static/js/2.27b2128e.chunk.js.map",
     "index.html": "/KatakanaTeachingWebapp/index.html",
-    "precache-manifest.f1b96ea24a7b01402bdaf9791d817bd2.js": "/KatakanaTeachingWebapp/precache-manifest.f1b96ea24a7b01402bdaf9791d817bd2.js",
+    "precache-manifest.cbab87fa4242bdfc2fc6d01ff48dfcf9.js": "/KatakanaTeachingWebapp/precache-manifest.cbab87fa4242bdfc2fc6d01ff48dfcf9.js",
     "service-worker.js": "/KatakanaTeachingWebapp/service-worker.js",
     "static/css/2.76c8123f.chunk.css.map": "/KatakanaTeachingWebapp/static/css/2.76c8123f.chunk.css.map",
     "static/css/main.a83fd9d7.chunk.css.map": "/KatakanaTeachingWebapp/static/css/main.a83fd9d7.chunk.css.map",
@@ -21,6 +21,6 @@
     "static/css/2.76c8123f.chunk.css",
     "static/js/2.27b2128e.chunk.js",
     "static/css/main.a83fd9d7.chunk.css",
-    "static/js/main.14df74cd.chunk.js"
+    "static/js/main.d83432c4.chunk.js"
   ]
 }
