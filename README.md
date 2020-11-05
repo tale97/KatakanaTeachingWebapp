@@ -39,7 +39,7 @@ Here's the [link to actual website](https://tale97.github.io/KatakanaTeachingWeb
   - LogRocket
   
 ## About The Project
-This is a project that I have been working on for the past couple months. The original reason I wanted to work on this project was to help my friend with her senior thesis. She needed to develop a tool to teach people Katakana in a unique way. I wanted to learn more about web development so I undertake this project and learn various new technologies such as React/Redux, PostgreSQL, Javascript, which I have never touched before. I have learn a lot from working on this project and it got me very excited about web development in general. I hope to further hone my skill as a web developer.
+This is a project that I have been working on for the past couple months with my partner Lien Tran. The original reason I wanted to work on this project was to help Lien with her senior thesis. She needed to develop a tool to teach people Katakana in a unique way. I wanted to learn more about web development so I undertake this project and learn various new technologies such as React/Redux, PostgreSQL, Javascript, which I have never touched before. I have learn a lot from working on this project and it got me very excited about web development in general. I hope to further hone my skill as a web developer. Thanks Lien for such an awesome opportunity and for helping me find my new passion!
 
 ## Setup
 ### `npm install`
